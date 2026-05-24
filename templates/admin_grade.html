@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<style>
+    .section {
+        background: white;
+        padding: 2rem;
+        border-radius: 10px;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .section h2 {
+        color: #1a237e;
+        margin-bottom: 1.5rem;
+        border-bottom: 3px solid #ffd700;
+        padding-bottom: 0.5rem;
+    }
+
+    .assignment-header {
+        background: #f5f5f5;
+        padding: 1.5rem;
+        border-radius: 10px;
+        margin-bottom: 2rem;
+        border-left: 5px solid #ffd700;
+    }
+
+    .submission-card {
+        background: #f9f9f9;
+        padding: 1.5rem;
+        border-radius: 10px;
+        margin-bottom: 1.5rem;
+        border: 2px solid #e0e0e0;
+    }
+
+    .submission-card h3 {
+        color: #1a237e;
+        margin-bottom: 1rem;
+    }
+
+    .submission-content {
+        background: white;
+        padding: 1rem;
+        border-radius: 5px;
+        margin-bottom: 1rem;
+        border-left: 3px solid #2196f3;
+    }
+
+    .grade-form {
+        display: grid;
+        grid-template-columns: 150px 1fr auto;
+        gap: 1rem;
+        align-items: start;
+    }
+
+    .form-group input,
+    .form-group textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 5px;
+        font-size: 1rem;
+        font-family: inherit;
+    }
+
+    .form-group textarea {
+        min-height: 80px;
+    }
+
+    .btn {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-weight: bold;
+    }
+
+    .btn-success {
+        background: #4caf50;
+        color: white;
+    }
+
+    .btn-success:hover {
+        background: #66bb6a;
+    }
+
+    .grade-badge {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        background: #4caf50;
+        color: white;
+    }
+
+    .no-submissions {
+        text-align: center;
+        padding: 3rem;
+        color: #999;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="assignment-header">
+    <h2>📝 {{ assignment[2] }} / {{ assignment[3] }}</h2>
+    <p><strong>Class:</strong> {{ assignment[1] }}</p>
+    <p><strong>Due Date:</strong> {{ assignment[6] }}</p>
+</div>
+
+<div class="section">
+    <h2>📊 Student Submissions</h2>
+
+    {% if submissions %}
+        {% for submission in submissions %}
+        <div class="submission-card">
+            <h3>👤 {{ submission[8] }} ({{ submission[9] }})</h3>
+            <p><strong>Submitted:</strong> {{ submission[4][:19] }}</p>
+
+            <div class="submission-content">
+                {{ submission[3] }}
+            </div>
+
+            <form method="POST" action="{{ url_for('save_grade', submission_id=submission[0]) }}">
+                <div class="grade-form">
+                    <div class="form-group">
+                        <input type="number" name="grade" min="0" max="100"
+                               value="{{ submission[5] or '' }}"
+                               placeholder="Grade (0-100)" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea name="feedback" placeholder="Feedback / አስተያየት">{{ submission[6] or '' }}</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success">💾 Save Grade</button>
+                </div>
+            </form>
+
+            {% if submission[5] %}
+            <div style="margin-top: 1rem;">
+                <span class="grade-badge">Grade: {{ submission[5] }}/100</span>
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="no-submissions">
+            <h3>📭 No submissions yet</h3>
+            <p>Students haven't submitted this assignment yet.</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

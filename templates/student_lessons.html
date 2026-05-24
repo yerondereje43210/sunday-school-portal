@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="margin-bottom:2.5rem;">
+    <p style="font-size:0.75rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#0EA5E9;margin-bottom:0.5rem;">My Lessons</p>
+    <h1 style="font-size:2.5rem;font-weight:900;color:#0C1B33;margin-bottom:0.4rem;">{{ current_user.class_name }}.</h1>
+    <p style="font-size:1rem;color:#64748B;">ሆኅተ ብርሃን ሰንበት ት/ቤት</p>
+</div>
+
+{% if lessons %}
+    {% for lesson in lessons %}
+    <div style="padding:2rem;border:1.5px solid #E2E8F0;border-radius:12px;background:white;margin-bottom:1.5rem;transition:all 0.3s;" onmouseover="this.style.borderColor='#0EA5E9'" onmouseout="this.style.borderColor='#E2E8F0'">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.5rem;flex-wrap:wrap;gap:0.75rem;">
+            <div>
+                <h2 style="font-size:1.3rem;font-weight:800;color:#0C1B33;margin-bottom:0.25rem;">{{ lesson[2] }}</h2>
+                <p style="font-size:0.85rem;color:#94A3B8;">{{ lesson[3] }} &mdash; {{ lesson[6][:10] }}</p>
+            </div>
+            <span style="font-size:0.72rem;font-weight:700;padding:0.3rem 0.8rem;background:#F0F9FF;color:#0369A1;border-radius:20px;">{{ lesson[1] }}</span>
+        </div>
+
+        <div style="display:flex;gap:0.5rem;margin-bottom:1.5rem;">
+            <button onclick="showTab(this,'en-{{ lesson[0] }}','am-{{ lesson[0] }}')" style="padding:0.5rem 1.2rem;background:#0C1B33;color:white;border:2px solid #0C1B33;border-radius:8px;font-size:0.82rem;font-weight:700;cursor:pointer;transition:all 0.2s;font-family:inherit;">English</button>
+            <button onclick="showTab(this,'am-{{ lesson[0] }}','en-{{ lesson[0] }}')" style="padding:0.5rem 1.2rem;background:transparent;color:#0C1B33;border:2px solid #0C1B33;border-radius:8px;font-size:0.82rem;font-weight:700;cursor:pointer;transition:all 0.2s;font-family:inherit;">አማርኛ</button>
+        </div>
+
+        <div id="en-{{ lesson[0] }}" style="background:#F8FAFC;border-radius:10px;padding:1.5rem;color:#374151;line-height:1.9;font-size:0.9rem;white-space:pre-wrap;border-left:3px solid #0C1B33;">{{ lesson[4] }}</div>
+        <div id="am-{{ lesson[0] }}" style="background:#F8FAFC;border-radius:10px;padding:1.5rem;color:#374151;line-height:1.9;font-size:0.9rem;white-space:pre-wrap;border-left:3px solid #0EA5E9;display:none;">{{ lesson[5] }}</div>
+    </div>
+    {% endfor %}
+{% else %}
+<div style="padding:5rem 2rem;text-align:center;border:1.5px solid #E2E8F0;border-radius:12px;background:white;">
+    <h3 style="font-size:1.2rem;font-weight:800;color:#0C1B33;margin-bottom:0.5rem;">No lessons yet.</h3>
+    <p style="color:#94A3B8;font-size:0.875rem;">Your teacher has not posted any lessons for your class yet.</p>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function showTab(btn,showId,hideId){
+    document.getElementById(showId).style.display='block';
+    document.getElementById(hideId).style.display='none';
+    const card=btn.closest('div[style*="display:flex;gap:0.5rem"]');
+    card.querySelectorAll('button').forEach(b=>{
+        b.style.background='transparent';
+        b.style.color='#0C1B33';
+    });
+    btn.style.background='#0C1B33';
+    btn.style.color='white';
+}
+</script>
+{% endblock %}

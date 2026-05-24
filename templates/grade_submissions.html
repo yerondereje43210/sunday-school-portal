@@ -1,0 +1,580 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+    * { box-sizing: border-box; }
+
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(24px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideRight {
+        from { opacity: 0; transform: translateX(-16px); }
+        to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes scaleIn {
+        from { opacity: 0; transform: scale(0.94); }
+        to   { opacity: 1; transform: scale(1); }
+    }
+    @keyframes progressFill { from { width: 0; } }
+
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.6rem 1.25rem;
+        border: 1.5px solid #E2E8F0;
+        border-radius: 10px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #475569;
+        text-decoration: none;
+        background: white;
+        transition: all 0.2s;
+        margin-bottom: 1.5rem;
+        font-family: 'DM Sans', sans-serif;
+        animation: slideRight 0.5s ease both;
+    }
+    .back-btn:hover { border-color: #0C1B33; color: #0C1B33; }
+
+    .gs-header {
+        animation: fadeUp 0.7s ease both;
+        padding: 2rem 0 1.75rem;
+        border-bottom: 1px solid #E9EEF4;
+        margin-bottom: 2.5rem;
+        position: relative;
+    }
+    .gs-header::after {
+        content: '';
+        position: absolute;
+        bottom: -1px; left: 0;
+        width: 120px; height: 3px;
+        background: linear-gradient(90deg, #0C1B33, #0EA5E9);
+        border-radius: 2px;
+    }
+    .gs-breadcrumb {
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #94A3B8;
+        margin-bottom: 0.6rem;
+        font-family: 'DM Sans', sans-serif;
+    }
+    .gs-breadcrumb a { color: #0EA5E9; text-decoration: none; }
+    .gs-title {
+        font-family: 'Syne', sans-serif;
+        font-size: 2.4rem;
+        font-weight: 800;
+        color: #0C1B33;
+        margin: 0 0 0.5rem;
+        line-height: 1.15;
+    }
+    .gs-meta {
+        font-size: 0.88rem;
+        color: #64748B;
+        font-family: 'DM Sans', sans-serif;
+        display: flex;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+    }
+
+    .stats-bar {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2.5rem;
+        animation: fadeUp 0.7s 0.15s ease both;
+    }
+    .stat-card {
+        background: white;
+        border: 1px solid #E9EEF4;
+        border-radius: 14px;
+        padding: 1.25rem 1.5rem;
+        position: relative;
+        overflow: hidden;
+        transition: box-shadow 0.3s, transform 0.3s;
+    }
+    .stat-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.08); transform: translateY(-3px); }
+    .stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; }
+    .stat-card.blue::before  { background: #0EA5E9; }
+    .stat-card.green::before { background: #22C55E; }
+    .stat-card.amber::before { background: #F59E0B; }
+    .stat-card.purple::before{ background: #8B5CF6; }
+    .stat-num {
+        font-family: 'Syne', sans-serif;
+        font-size: 2rem;
+        font-weight: 800;
+        color: #0C1B33;
+        line-height: 1;
+        margin-bottom: 0.25rem;
+    }
+    .stat-label {
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: #94A3B8;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        font-family: 'DM Sans', sans-serif;
+    }
+
+    .assignment-info {
+        background: linear-gradient(135deg, #0C1B33 0%, #1E3A5F 100%);
+        border-radius: 18px;
+        padding: 2rem 2.5rem;
+        margin-bottom: 2.5rem;
+        color: white;
+        animation: scaleIn 0.6s 0.2s ease both;
+        position: relative;
+        overflow: hidden;
+        font-family: 'DM Sans', sans-serif;
+    }
+    .assignment-info::before {
+        content: '📋';
+        position: absolute;
+        right: 2rem; top: 50%;
+        transform: translateY(-50%);
+        font-size: 5rem;
+        opacity: 0.07;
+    }
+    .ai-label {
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        color: #7DD3FC;
+        margin-bottom: 0.5rem;
+    }
+    .ai-title {
+        font-family: 'Syne', sans-serif;
+        font-size: 1.4rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+    }
+    .ai-questions { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    @media (max-width: 600px) { .ai-questions { grid-template-columns: 1fr; } }
+    .ai-q {
+        background: rgba(255,255,255,0.07);
+        border-radius: 10px;
+        padding: 0.85rem 1rem;
+        font-size: 0.88rem;
+        line-height: 1.6;
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+    .ai-q strong {
+        color: #7DD3FC;
+        font-size: 0.68rem;
+        letter-spacing: 1.5px;
+        display: block;
+        margin-bottom: 0.3rem;
+        text-transform: uppercase;
+    }
+
+    .gp-label {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.78rem;
+        color: #64748B;
+        font-weight: 600;
+        margin-bottom: 0.4rem;
+        font-family: 'DM Sans', sans-serif;
+    }
+    .graded-progress {
+        height: 6px;
+        background: #E9EEF4;
+        border-radius: 3px;
+        margin-bottom: 2rem;
+        overflow: hidden;
+    }
+    .gp-fill {
+        height: 100%;
+        border-radius: 3px;
+        background: linear-gradient(90deg, #22C55E, #16A34A);
+        animation: progressFill 1s 0.5s ease both;
+    }
+
+    .submissions-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.25rem;
+    }
+    .submissions-title {
+        font-family: 'Syne', sans-serif;
+        font-size: 1.2rem;
+        font-weight: 800;
+        color: #0C1B33;
+    }
+
+    .submission-card {
+        background: white;
+        border: 1px solid #E9EEF4;
+        border-radius: 18px;
+        margin-bottom: 1.25rem;
+        overflow: hidden;
+        transition: box-shadow 0.35s, transform 0.35s;
+        animation: fadeUp 0.6s ease both;
+        font-family: 'DM Sans', sans-serif;
+    }
+    .submission-card:hover { box-shadow: 0 12px 32px rgba(12,27,51,0.1); transform: translateY(-4px); }
+    .submission-card.graded {
+        border-color: #BBF7D0;
+        background: linear-gradient(135deg, #F0FDF4 0%, #FFFFFF 80%);
+    }
+    .submission-card:nth-child(1) { animation-delay: 0.05s; }
+    .submission-card:nth-child(2) { animation-delay: 0.15s; }
+    .submission-card:nth-child(3) { animation-delay: 0.25s; }
+    .submission-card:nth-child(4) { animation-delay: 0.35s; }
+    .submission-card:nth-child(5) { animation-delay: 0.45s; }
+
+    .sc-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.25rem 1.75rem;
+        border-bottom: 1px solid #F1F5F9;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+    .sc-student { display: flex; align-items: center; gap: 0.85rem; }
+    .sc-avatar {
+        width: 42px; height: 42px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #0EA5E9, #6366F1);
+        display: flex; align-items: center; justify-content: center;
+        font-family: 'Syne', sans-serif;
+        font-weight: 800;
+        font-size: 0.95rem;
+        color: white;
+        flex-shrink: 0;
+        text-transform: uppercase;
+    }
+    .sc-name { font-weight: 700; color: #0C1B33; font-size: 0.95rem; }
+    .sc-username { font-size: 0.78rem; color: #94A3B8; }
+    .sc-badges { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+
+    .badge {
+        font-size: 0.72rem;
+        font-weight: 700;
+        padding: 0.35rem 0.85rem;
+        border-radius: 20px;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        font-family: 'DM Sans', sans-serif;
+    }
+    .badge-graded  { background: #DCFCE7; color: #166534; border: 1px solid #BBF7D0; }
+    .badge-pending { background: #FEF3C7; color: #92400E; border: 1px solid #FDE68A; }
+    .badge-date    { background: #F1F5F9; color: #475569; border: 1px solid #E2E8F0; }
+
+    .score-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 46px; height: 46px;
+        border-radius: 12px;
+        font-family: 'Syne', sans-serif;
+        font-weight: 800;
+        font-size: 1.05rem;
+        background: linear-gradient(135deg, #22C55E, #16A34A);
+        color: white;
+        box-shadow: 0 4px 12px rgba(34,197,94,0.3);
+    }
+
+    .sc-body { padding: 1.5rem 1.75rem; }
+    .sc-answer-label {
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #94A3B8;
+        margin-bottom: 0.5rem;
+    }
+    .sc-answer {
+        font-size: 0.92rem;
+        color: #374151;
+        line-height: 1.8;
+        background: #F8FAFC;
+        border-radius: 10px;
+        padding: 1rem 1.25rem;
+        border-left: 3px solid #0EA5E9;
+        margin-bottom: 1.25rem;
+    }
+
+    .grade-form {
+        display: grid;
+        grid-template-columns: 140px 1fr auto;
+        gap: 0.75rem;
+        align-items: end;
+    }
+    @media (max-width: 600px) { .grade-form { grid-template-columns: 1fr; } }
+    .gf-group label {
+        display: block;
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: #0C1B33;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.4rem;
+        text-transform: uppercase;
+    }
+    .gf-group input, .gf-group textarea {
+        width: 100%;
+        padding: 0.7rem 0.9rem;
+        border: 1.5px solid #E2E8F0;
+        border-radius: 10px;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 0.9rem;
+        color: #0C1B33;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        background: white;
+    }
+    .gf-group input:focus, .gf-group textarea:focus {
+        outline: none;
+        border-color: #0EA5E9;
+        box-shadow: 0 0 0 3px rgba(14,165,233,0.12);
+    }
+    .gf-group textarea { resize: none; }
+    .save-btn {
+        padding: 0.7rem 1.4rem;
+        background: #0C1B33;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-family: 'Syne', sans-serif;
+        font-weight: 700;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: all 0.25s;
+        white-space: nowrap;
+    }
+    .save-btn:hover {
+        background: linear-gradient(135deg, #0EA5E9, #6366F1);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(14,165,233,0.3);
+    }
+
+    .feedback-display {
+        background: linear-gradient(135deg, #F0FDF4, #DCFCE7);
+        border-radius: 10px;
+        padding: 1rem 1.25rem;
+        border: 1px solid #BBF7D0;
+        display: flex;
+        gap: 1.25rem;
+        align-items: flex-start;
+    }
+    .fd-score-block { text-align: center; flex-shrink: 0; }
+    .fd-grade-label {
+        font-size: 0.68rem; font-weight: 700; color: #94A3B8;
+        letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 0.3rem;
+    }
+    .fd-grade {
+        font-family: 'Syne', sans-serif;
+        font-size: 1.6rem; font-weight: 800; color: #166534; line-height: 1;
+    }
+    .fd-grade span { font-size: 0.8rem; font-weight: 600; color: #4ADE80; }
+    .fd-feedback-label {
+        font-size: 0.68rem; font-weight: 700; color: #94A3B8;
+        letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 0.3rem;
+    }
+    .fd-feedback-text { font-size: 0.88rem; color: #374151; line-height: 1.6; }
+    .edit-grade-btn {
+        font-size: 0.75rem; font-weight: 600; color: #0EA5E9;
+        background: none; border: none; cursor: pointer; padding: 0;
+        margin-top: 0.4rem; font-family: 'DM Sans', sans-serif;
+        display: inline-flex; align-items: center; gap: 0.25rem;
+    }
+    .edit-grade-btn:hover { text-decoration: underline; }
+    .edit-form {
+        display: none;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px dashed #D1FAE5;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 5rem 2rem;
+        border: 2px dashed #E2E8F0;
+        border-radius: 18px;
+        background: #FAFBFC;
+        animation: scaleIn 0.6s ease both;
+        font-family: 'DM Sans', sans-serif;
+    }
+    .empty-state .icon { font-size: 3.5rem; margin-bottom: 1rem; opacity: 0.4; }
+    .empty-state h3 {
+        font-family: 'Syne', sans-serif;
+        font-weight: 800; color: #0C1B33;
+        margin-bottom: 0.5rem; font-size: 1.3rem;
+    }
+    .empty-state p { color: #94A3B8; font-size: 0.9rem; }
+    .empty-state a { color: #0EA5E9; }
+</style>
+
+<a href="{{ url_for('admin_assignments') }}" class="back-btn">← Back to Assignments</a>
+
+{% if assignment %}
+
+<div class="gs-header">
+    <p class="gs-breadcrumb">
+        <a href="{{ url_for('admin_dashboard') }}">Admin</a> /
+        <a href="{{ url_for('admin_assignments') }}">Assignments</a> /
+        Grade Submissions
+    </p>
+    <h1 class="gs-title">{{ assignment[2] }}</h1>
+    <div class="gs-meta">
+        <span>🏫 {{ assignment[1] }}</span>
+        <span>⏰ Due: {{ assignment[6] }}</span>
+        <span>📅 Created: {{ assignment[7][:10] }}</span>
+    </div>
+</div>
+
+{% set total_count = submissions | length %}
+{% set graded_list = [] %}
+{% for s in submissions %}{% if s[4] is not none %}{% set _ = graded_list.append(s[4]) %}{% endif %}{% endfor %}
+{% set graded_count = graded_list | length %}
+{% set pending_count = total_count - graded_count %}
+{% set avg_grade = (graded_list | sum / graded_count) | round(0) if graded_count > 0 else none %}
+
+<div class="stats-bar">
+    <div class="stat-card blue">
+        <div class="stat-num">{{ total_count }}</div>
+        <div class="stat-label">Submissions</div>
+    </div>
+    <div class="stat-card green">
+        <div class="stat-num">{{ graded_count }}</div>
+        <div class="stat-label">Graded</div>
+    </div>
+    <div class="stat-card amber">
+        <div class="stat-num">{{ pending_count }}</div>
+        <div class="stat-label">Pending</div>
+    </div>
+    <div class="stat-card purple">
+        <div class="stat-num">{{ avg_grade | int if avg_grade is not none else "—" }}</div>
+        <div class="stat-label">Avg Grade</div>
+    </div>
+</div>
+
+<div class="assignment-info">
+    <div class="ai-label">Assignment Questions</div>
+    <div class="ai-title">{{ assignment[2] }} / {{ assignment[3] }}</div>
+    <div class="ai-questions">
+        <div class="ai-q"><strong>English</strong>{{ assignment[4] }}</div>
+        <div class="ai-q"><strong>አማርኛ</strong>{{ assignment[5] }}</div>
+    </div>
+</div>
+
+{% if total_count > 0 %}
+<div class="gp-label">
+    <span>Grading Progress</span>
+    <span>{{ graded_count }} / {{ total_count }} graded</span>
+</div>
+<div class="graded-progress">
+    <div class="gp-fill" style="width: {{ ((graded_count / total_count) * 100) | int }}%"></div>
+</div>
+{% endif %}
+
+<div class="submissions-header">
+    <div class="submissions-title">📝 Submissions ({{ total_count }})</div>
+</div>
+
+{% if submissions %}
+    {% for sub in submissions %}
+    {% set name_parts = sub[7].split(' ') %}
+    {% set initials = (name_parts[0][0] if name_parts | length > 0 else '') + (name_parts[1][0] if name_parts | length > 1 else '') %}
+
+    <div class="submission-card {% if sub[4] is not none %}graded{% endif %}">
+        <div class="sc-top">
+            <div class="sc-student">
+                <div class="sc-avatar">{{ initials | upper }}</div>
+                <div>
+                    <div class="sc-name">{{ sub[7] }}</div>
+                    <div class="sc-username">@{{ sub[8] }}</div>
+                </div>
+            </div>
+            <div class="sc-badges">
+                <span class="badge badge-date">📅 {{ sub[6][:10] }}</span>
+                {% if sub[4] is not none %}
+                    <span class="badge badge-graded">✓ Graded</span>
+                    <div class="score-pill">{{ sub[4] }}</div>
+                {% else %}
+                    <span class="badge badge-pending">⏳ Pending</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="sc-body">
+            <div class="sc-answer-label">Student Answer</div>
+            <div class="sc-answer">{{ sub[3] }}</div>
+
+            {% if sub[4] is not none %}
+            <div class="feedback-display">
+                <div class="fd-score-block">
+                    <div class="fd-grade-label">Grade</div>
+                    <div class="fd-grade">{{ sub[4] }}<span>/100</span></div>
+                </div>
+                <div style="flex:1">
+                    <div class="fd-feedback-label">Feedback</div>
+                    <div class="fd-feedback-text">{{ sub[5] if sub[5] else 'No feedback provided.' }}</div>
+                    <button class="edit-grade-btn" onclick="toggleEdit({{ sub[0] }})">✏️ Edit grade</button>
+                </div>
+            </div>
+            <div class="edit-form" id="edit-form-{{ sub[0] }}">
+                <form method="POST" action="{{ url_for('save_grade', submission_id=sub[0]) }}">
+                    <div class="grade-form">
+                        <div class="gf-group">
+                            <label>Grade (0–100)</label>
+                            <input type="number" name="grade" min="0" max="100" value="{{ sub[4] }}" required>
+                        </div>
+                        <div class="gf-group">
+                            <label>Feedback</label>
+                            <textarea name="feedback" rows="2">{{ sub[5] or '' }}</textarea>
+                        </div>
+                        <button type="submit" class="save-btn">Update ✓</button>
+                    </div>
+                </form>
+            </div>
+
+            {% else %}
+            <form method="POST" action="{{ url_for('save_grade', submission_id=sub[0]) }}">
+                <div class="grade-form">
+                    <div class="gf-group">
+                        <label>Grade (0–100)</label>
+                        <input type="number" name="grade" min="0" max="100" placeholder="e.g. 85" required>
+                    </div>
+                    <div class="gf-group">
+                        <label>Feedback (optional)</label>
+                        <textarea name="feedback" rows="2" placeholder="Write feedback for the student..."></textarea>
+                    </div>
+                    <button type="submit" class="save-btn">💾 Save Grade</button>
+                </div>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+
+{% else %}
+<div class="empty-state">
+    <div class="icon">📭</div>
+    <h3>No submissions yet</h3>
+    <p>Students haven't submitted their answers yet. Check back soon!</p>
+</div>
+{% endif %}
+
+{% else %}
+<div class="empty-state">
+    <div class="icon">❌</div>
+    <h3>Assignment not found</h3>
+    <p><a href="{{ url_for('admin_assignments') }}">← Go back to assignments.</a></p>
+</div>
+{% endif %}
+
+<script>
+function toggleEdit(id) {
+    const form = document.getElementById('edit-form-' + id);
+    if (form) form.style.display = form.style.display === 'block' ? 'none' : 'block';
+}
+</script>
+{% endblock %}

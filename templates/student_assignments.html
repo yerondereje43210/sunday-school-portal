@@ -1,0 +1,496 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes slideInRight {
+        from {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes pulse {
+        0%, 100% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.05);
+        }
+    }
+
+    @keyframes shimmer {
+        0% {
+            background-position: -1000px 0;
+        }
+        100% {
+            background-position: 1000px 0;
+        }
+    }
+
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0px);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+    }
+
+    .page-header {
+        animation: fadeInUp 0.8s ease-out;
+        margin-bottom: 3rem;
+        position: relative;
+        padding: 2.5rem 0;
+    }
+
+    .page-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #0EA5E9, #6366F1, #EC4899);
+        border-radius: 2px;
+        animation: shimmer 3s infinite linear;
+        background-size: 1000px 100%;
+    }
+
+    .section-label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        background: linear-gradient(135deg, #0EA5E9, #6366F1);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.75rem;
+        display: inline-block;
+        animation: slideInRight 0.6s ease-out;
+    }
+
+    .page-title {
+        font-size: 3.5rem;
+        font-weight: 900;
+        background: linear-gradient(135deg, #0C1B33 0%, #1E293B 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.5rem;
+        line-height: 1.2;
+        animation: fadeInUp 0.8s ease-out 0.2s backwards;
+    }
+
+    .subtitle {
+        font-size: 1.1rem;
+        color: #64748B;
+        font-weight: 500;
+        animation: fadeInUp 0.8s ease-out 0.4s backwards;
+    }
+
+    .assignment-card {
+        padding: 2.5rem;
+        border-radius: 20px;
+        background: white;
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+        animation: fadeInUp 0.8s ease-out backwards;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    }
+
+    .assignment-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, #0EA5E9, #6366F1);
+        opacity: 0;
+        transition: opacity 0.4s ease;
+    }
+
+    .assignment-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    .assignment-card:hover::before {
+        opacity: 1;
+    }
+
+    .assignment-card.submitted {
+        border: 2px solid #BBF7D0;
+        background: linear-gradient(135deg, #F0FDF4 0%, #FFFFFF 100%);
+    }
+
+    .assignment-card.submitted::before {
+        background: linear-gradient(90deg, #22C55E, #16A34A);
+    }
+
+    .assignment-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 1.75rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .assignment-title {
+        font-size: 1.75rem;
+        font-weight: 900;
+        color: #0C1B33;
+        margin-bottom: 0.5rem;
+        transition: color 0.3s ease;
+    }
+
+    .assignment-card:hover .assignment-title {
+        background: linear-gradient(135deg, #0EA5E9, #6366F1);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .assignment-subtitle {
+        font-size: 0.95rem;
+        color: #94A3B8;
+        font-weight: 500;
+    }
+
+    .badge-container {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .badge {
+        font-size: 0.75rem;
+        font-weight: 700;
+        padding: 0.5rem 1.25rem;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .badge:hover {
+        transform: scale(1.05);
+    }
+
+    .badge-due {
+        background: linear-gradient(135deg, #FEF2F2, #FEE2E2);
+        color: #991B1B;
+        border: 1px solid #FECACA;
+    }
+
+    .badge-submitted {
+        background: linear-gradient(135deg, #F0FDF4, #DCFCE7);
+        color: #166534;
+        border: 1px solid #BBF7D0;
+        animation: pulse 2s infinite;
+    }
+
+    .question-container {
+        background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%);
+        border-radius: 15px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        border-left: 5px solid #0C1B33;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .question-container::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(14, 165, 233, 0.05) 0%, transparent 70%);
+        animation: float 6s ease-in-out infinite;
+    }
+
+    .question-container:hover {
+        transform: translateX(5px);
+        border-left-color: #0EA5E9;
+    }
+
+    .question-text {
+        font-size: 0.95rem;
+        color: #374151;
+        line-height: 1.9;
+        margin-bottom: 1rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .question-text strong {
+        color: #0C1B33;
+        font-weight: 800;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        font-size: 0.95rem;
+        font-weight: 700;
+        color: #0C1B33;
+        margin-bottom: 0.75rem;
+        letter-spacing: 0.5px;
+    }
+
+    .form-group textarea {
+        width: 100%;
+        min-height: 180px;
+        padding: 1.25rem;
+        border: 2px solid #E2E8F0;
+        border-radius: 12px;
+        font-size: 0.95rem;
+        font-family: inherit;
+        transition: all 0.3s ease;
+        background: white;
+        color: #0C1B33;
+        resize: vertical;
+    }
+
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #0EA5E9;
+        box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+        transform: translateY(-2px);
+    }
+
+    .submit-button {
+        width: 100%;
+        padding: 1.25rem;
+        background: linear-gradient(135deg, #0C1B33 0%, #1E293B 100%);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 1.05rem;
+        font-weight: 800;
+        cursor: pointer;
+        font-family: inherit;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+        letter-spacing: 0.5px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .submit-button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s ease;
+    }
+
+    .submit-button:hover::before {
+        left: 100%;
+    }
+
+    .submit-button:hover {
+        background: linear-gradient(135deg, #0EA5E9 0%, #6366F1 100%);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+    }
+
+    .submit-button:active {
+        transform: translateY(-1px);
+    }
+
+    .submitted-notice {
+        padding: 1.5rem 2rem;
+        background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%);
+        border-radius: 15px;
+        border: 2px solid #BBF7D0;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .submitted-notice::before {
+        content: '✓';
+        width: 45px;
+        height: 45px;
+        background: linear-gradient(135deg, #22C55E, #16A34A);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: 900;
+        flex-shrink: 0;
+        box-shadow: 0 4px 6px rgba(34, 197, 94, 0.3);
+    }
+
+    .submitted-notice p {
+        color: #166534;
+        font-weight: 700;
+        font-size: 0.95rem;
+        margin: 0;
+    }
+
+    .empty-state {
+        padding: 6rem 3rem;
+        text-align: center;
+        border: 2px dashed #E2E8F0;
+        border-radius: 20px;
+        background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%);
+        animation: fadeIn 1s ease-out;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .empty-state::before {
+        content: '📚';
+        font-size: 5rem;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 0.05;
+        animation: float 4s ease-in-out infinite;
+    }
+
+    .empty-state h3 {
+        font-size: 1.5rem;
+        font-weight: 900;
+        color: #0C1B33;
+        margin-bottom: 0.75rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .empty-state p {
+        color: #94A3B8;
+        font-size: 0.95rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .assignment-icon {
+        width: 50px;
+        height: 50px;
+        background: linear-gradient(135deg, #0EA5E9, #6366F1);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 4px 6px rgba(14, 165, 233, 0.3);
+        animation: float 3s ease-in-out infinite;
+    }
+
+    /* Stagger animation delays for cards */
+    .assignment-card:nth-child(1) { animation-delay: 0.1s; }
+    .assignment-card:nth-child(2) { animation-delay: 0.2s; }
+    .assignment-card:nth-child(3) { animation-delay: 0.3s; }
+    .assignment-card:nth-child(4) { animation-delay: 0.4s; }
+    .assignment-card:nth-child(5) { animation-delay: 0.5s; }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .page-title {
+            font-size: 2.5rem;
+        }
+
+        .assignment-card {
+            padding: 1.5rem;
+        }
+
+        .assignment-title {
+            font-size: 1.35rem;
+        }
+    }
+</style>
+
+<div class="page-header">
+    <div class="assignment-icon">📖</div>
+    <p class="section-label">My Assignments</p>
+    <h1 class="page-title">{{ current_user.class_name }}.</h1>
+    <p class="subtitle">ሆኅተ ብርሃን ሰንበት ት/ቤት</p>
+</div>
+
+{% if assignments %}
+    {% for assignment in assignments %}
+    <div class="assignment-card {% if assignment[0] in submitted %}submitted{% endif %}">
+        <div class="assignment-header">
+            <div>
+                <h2 class="assignment-title">{{ assignment[2] }}</h2>
+                <p class="assignment-subtitle">{{ assignment[3] }}</p>
+            </div>
+            <div class="badge-container">
+                <span class="badge badge-due">⏰ Due: {{ assignment[6] }}</span>
+                {% if assignment[0] in submitted %}
+                <span class="badge badge-submitted">✓ Submitted</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="question-container">
+            <p class="question-text"><strong>English:</strong> {{ assignment[4] }}</p>
+            <p class="question-text"><strong>አማርኛ:</strong> {{ assignment[5] }}</p>
+        </div>
+
+        {% if assignment[0] not in submitted %}
+        <form method="POST" action="{{ url_for('submit_assignment', assignment_id=assignment[0]) }}">
+            <div class="form-group">
+                <label>Your Answer / መልስዎ</label>
+                <textarea name="content" placeholder="Write your thoughtful answer here..." required></textarea>
+            </div>
+            <button type="submit" class="submit-button">Submit Assignment →</button>
+        </form>
+        {% else %}
+        <div class="submitted-notice">
+            <p>You have already submitted this assignment. Great work!</p>
+        </div>
+        {% endif %}
+    </div>
+    {% endfor %}
+{% else %}
+<div class="empty-state">
+    <h3>No assignments yet.</h3>
+    <p>Your teacher has not posted any assignments yet. Check back soon!</p>
+</div>
+{% endif %}
+
+{% endblock %}

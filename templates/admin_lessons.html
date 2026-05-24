@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<style>
+    .section {
+        background: white;
+        padding: 2rem;
+        border-radius: 10px;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .section h2 {
+        color: #1a237e;
+        margin-bottom: 1.5rem;
+        border-bottom: 3px solid #ffd700;
+        padding-bottom: 0.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-group label {
+        display: block;
+        color: #1a237e;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 5px;
+        font-size: 1rem;
+        font-family: inherit;
+    }
+
+    .form-group textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+
+    .btn {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-weight: bold;
+    }
+
+    .btn-primary {
+        background: linear-gradient(90deg, #1a237e 0%, #0d47a1 100%);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(26, 35, 126, 0.3);
+    }
+
+    .lesson-card {
+        background: #f5f5f5;
+        padding: 1.5rem;
+        border-radius: 10px;
+        margin-bottom: 1rem;
+        border-left: 5px solid #ffd700;
+    }
+
+    .lesson-card h3 {
+        color: #1a237e;
+        margin-bottom: 0.5rem;
+    }
+
+    .lesson-card .meta {
+        color: #666;
+        font-size: 0.85rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .lesson-card .content {
+        color: #333;
+        line-height: 1.6;
+    }
+
+    .class-badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: bold;
+        background: #ffd700;
+        color: #1a237e;
+        margin-right: 0.5rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="section">
+    <h2>📖 Add New Lesson</h2>
+    <form method="POST">
+        <div class="form-group">
+            <label>Select Class / ክፍል ይምረጡ</label>
+            <select name="class_name" required>
+                {% for class_name in classes %}
+                <option value="{{ class_name }}">{{ class_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Lesson Title (English)</label>
+                <input type="text" name="title_en" required placeholder="e.g., Introduction to Doctrine">
+            </div>
+            <div class="form-group">
+                <label>የትምህርት ርዕስ (አማርኛ)</label>
+                <input type="text" name="title_am" required placeholder="ለምሳሌ፡ ትምህርት መግቢያ">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Lesson Content (English)</label>
+            <textarea name="content_en" required placeholder="Write the lesson content in English..."></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>የትምህርት ይዘት (አማርኛ)</label>
+            <textarea name="content_am" required placeholder="የትምህርቱን ይዘት በአማርኛ ይጻፉ..."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary">✅ Add Lesson</button>
+    </form>
+</div>
+
+<div class="section">
+    <h2>📚 All Lessons ({{ lessons|length }})</h2>
+    {% for lesson in lessons %}
+    <div class="lesson-card">
+        <h3>{{ lesson[2] }} / {{ lesson[3] }}</h3>
+        <div class="meta">
+            <span class="class-badge">{{ lesson[1] }}</span>
+            <span>Created: {{ lesson[6][:10] }}</span>
+        </div>
+        <div class="content">
+            <strong>English:</strong> {{ lesson[4][:200] }}{% if lesson[4]|length > 200 %}...{% endif %}
+        </div>
+        <div class="content" style="margin-top: 0.5rem;">
+            <strong>አማርኛ:</strong> {{ lesson[5][:200] }}{% if lesson[5]|length > 200 %}...{% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

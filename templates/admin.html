@@ -1,0 +1,239 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<style>
+    .dashboard-header {
+        background: white;
+        padding: 2rem;
+        border-radius: 10px;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        border-left: 5px solid #ffd700;
+    }
+
+    .dashboard-header h1 {
+        color: #1a237e;
+        margin-bottom: 0.5rem;
+    }
+
+    .dashboard-header p {
+        color: #666;
+    }
+
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+
+    .stat-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        text-align: center;
+        border-top: 4px solid #ffd700;
+    }
+
+    .stat-card h3 {
+        color: #1a237e;
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-card p {
+        color: #666;
+        font-size: 0.9rem;
+    }
+
+    .section {
+        background: white;
+        padding: 2rem;
+        border-radius: 10px;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .section h2 {
+        color: #1a237e;
+        margin-bottom: 1.5rem;
+        border-bottom: 3px solid #ffd700;
+        padding-bottom: 0.5rem;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-group label {
+        display: block;
+        color: #1a237e;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-group input,
+    .form-group select {
+        width: 100%;
+        padding: 0.75rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 5px;
+        font-size: 1rem;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+        outline: none;
+        border-color: #ffd700;
+    }
+
+    .btn {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-weight: bold;
+    }
+
+    .btn-primary {
+        background: linear-gradient(90deg, #1a237e 0%, #0d47a1 100%);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(26, 35, 126, 0.3);
+    }
+
+    .btn-danger {
+        background: #d32f2f;
+        color: white;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .btn-danger:hover {
+        background: #f44336;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+    }
+
+    .table th {
+        background: #1a237e;
+        color: white;
+        padding: 1rem;
+        text-align: left;
+        border-bottom: 3px solid #ffd700;
+    }
+
+    .table td {
+        padding: 1rem;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .table tr:hover {
+        background: #f5f5f5;
+    }
+
+    .class-badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: bold;
+        background: #ffd700;
+        color: #1a237e;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <h1>👑 Admin Dashboard</h1>
+    <p>Welcome, Administrator! Manage students, classes, and content.</p>
+</div>
+
+<div class="stats-grid">
+    {% for class_name, count in stats.items() %}
+    <div class="stat-card">
+        <h3>{{ count }}</h3>
+        <p>{{ class_name }}</p>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="section">
+    <h2>➕ Add New Student</h2>
+    <form method="POST" action="{{ url_for('add_student') }}">
+        <div class="form-row">
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" name="username" required>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" name="password" required>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Full Name / ሙሉ ስም</label>
+                <input type="text" name="full_name" required>
+            </div>
+            <div class="form-group">
+                <label>Class / ክፍል</label>
+                <select name="class_name" required>
+                    {% for class_name in classes %}
+                    <option value="{{ class_name }}">{{ class_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">✅ Add Student</button>
+    </form>
+</div>
+
+<div class="section">
+    <h2>👥 All Students ({{ students|length }})</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Full Name</th>
+                <th>Class</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+            <tr>
+                <td>{{ student[1] }}</td>
+                <td>{{ student[3] }}</td>
+                <td><span class="class-badge">{{ student[4] }}</span></td>
+                <td>
+                    <a href="{{ url_for('delete_student', student_id=student[0]) }}"
+                       class="btn btn-danger"
+                       onclick="return confirm('Delete {{ student[3] }}?')">
+                        🗑️ Delete
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

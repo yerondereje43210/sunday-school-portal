@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="margin-bottom:2.5rem;">
+    <p style="font-size:0.75rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#0EA5E9;margin-bottom:0.5rem;">My Progress</p>
+    <h1 style="font-size:2.5rem;font-weight:900;color:#0C1B33;margin-bottom:0.4rem;">{{ current_user.full_name }}.</h1>
+    <p style="font-size:1rem;color:#64748B;">{{ current_user.class_name }} &mdash; ሆኅተ ብርሃን ሰንበት ት/ቤት</p>
+</div>
+
+<div style="padding:2rem;border:1.5px solid #E2E8F0;border-radius:12px;background:white;margin-bottom:1.5rem;">
+    <h3 style="font-size:1rem;font-weight:800;color:#0C1B33;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1.5px solid #F1F5F9;text-transform:uppercase;letter-spacing:1px;">Quiz Scores</h3>
+    {% if quiz_scores %}
+        {% for score in quiz_scores %}
+        {% set pct = (score[1] / score[2] * 100)|int %}
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:1rem 0;border-bottom:1px solid #F8FAFC;flex-wrap:wrap;gap:0.75rem;">
+            <div>
+                <div style="font-weight:700;font-size:0.95rem;color:#0C1B33;">{{ score[0] }}</div>
+                <div style="font-size:0.75rem;color:#94A3B8;margin-top:0.2rem;">{{ score[3][:10] }}</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:1rem;">
+                <div style="width:140px;height:6px;background:#F1F5F9;border-radius:10px;overflow:hidden;">
+                    <div style="width:{{ pct }}%;height:100%;background:{% if pct >= 75 %}#22C55E{% elif pct >= 50 %}#F59E0B{% else %}#EF4444{% endif %};border-radius:10px;"></div>
+                </div>
+                <span style="font-size:0.82rem;font-weight:700;color:{% if pct >= 75 %}#166534{% elif pct >= 50 %}#92400E{% else %}#991B1B{% endif %};">{{ score[1] }}/{{ score[2] }} ({{ pct }}%)</span>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+    <p style="color:#94A3B8;font-size:0.875rem;padding:1rem 0;">No quiz scores yet. Complete quizzes to see results here.</p>
+    {% endif %}
+</div>
+
+<div style="padding:2rem;border:1.5px solid #E2E8F0;border-radius:12px;background:white;margin-bottom:1.5rem;">
+    <h3 style="font-size:1rem;font-weight:800;color:#0C1B33;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1.5px solid #F1F5F9;text-transform:uppercase;letter-spacing:1px;">Assignment Grades</h3>
+    {% if assignment_grades %}
+        {% for grade in assignment_grades %}
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:1rem 0;border-bottom:1px solid #F8FAFC;flex-wrap:wrap;gap:0.5rem;">
+            <div>
+                <div style="font-weight:700;font-size:0.95rem;color:#0C1B33;">{{ grade[0] }}</div>
+                <div style="font-size:0.75rem;color:#94A3B8;margin-top:0.2rem;">{{ grade[3][:10] }}</div>
+                {% if grade[2] %}<div style="font-size:0.8rem;color:#64748B;margin-top:0.25rem;font-style:italic;">{{ grade[2] }}</div>{% endif %}
+            </div>
+            {% if grade[1] %}
+            <span style="font-size:0.9rem;font-weight:800;color:{% if grade[1] >= 75 %}#166534{% elif grade[1] >= 50 %}#92400E{% else %}#991B1B{% endif %};">{{ grade[1] }}/100</span>
+            {% else %}
+            <span style="font-size:0.8rem;font-weight:600;color:#94A3B8;">Pending</span>
+            {% endif %}
+        </div>
+        {% endfor %}
+    {% else %}
+    <p style="color:#94A3B8;font-size:0.875rem;padding:1rem 0;">No graded assignments yet.</p>
+    {% endif %}
+</div>
+
+<div style="padding:2rem;border:1.5px solid #E2E8F0;border-radius:12px;background:white;margin-bottom:1.5rem;">
+    <h3 style="font-size:1rem;font-weight:800;color:#0C1B33;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1.5px solid #F1F5F9;text-transform:uppercase;letter-spacing:1px;">Attendance — Last 30 Days</h3>
+    {% if attendance %}
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0.6rem;">
+        {% for record in attendance %}
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:0.7rem 1rem;border-radius:8px;border:1px solid {% if record[1] == 'present' %}#BBF7D0{% else %}#FECACA{% endif %};background:{% if record[1] == 'present' %}#F0FDF4{% else %}#FEF2F2{% endif %};">
+            <span style="font-size:0.82rem;font-weight:500;color:#374151;">{{ record[0] }}</span>
+            <span style="font-size:0.75rem;font-weight:700;color:{% if record[1] == 'present' %}#166534{% else %}#991B1B{% endif %};">{{ record[1]|capitalize }}</span>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p style="color:#94A3B8;font-size:0.875rem;padding:1rem 0;">No attendance records yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

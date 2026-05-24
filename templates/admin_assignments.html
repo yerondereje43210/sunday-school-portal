@@ -1,0 +1,224 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<style>
+    .section {
+        background: white;
+        padding: 2rem;
+        border-radius: 10px;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .section h2 {
+        color: #1a237e;
+        margin-bottom: 1.5rem;
+        border-bottom: 3px solid #ffd700;
+        padding-bottom: 0.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-group label {
+        display: block;
+        color: #1a237e;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 5px;
+        font-size: 1rem;
+        font-family: inherit;
+    }
+
+    .form-group textarea {
+        min-height: 100px;
+        resize: vertical;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: #ffd700;
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+
+    .btn {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-weight: bold;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-primary {
+        background: linear-gradient(90deg, #1a237e 0%, #0d47a1 100%);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(26, 35, 126, 0.3);
+    }
+
+    .btn-info {
+        background: #2196f3;
+        color: white;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .btn-info:hover {
+        background: #1976d2;
+    }
+
+    .assignment-card {
+        background: #f5f5f5;
+        padding: 1.5rem;
+        border-radius: 10px;
+        margin-bottom: 1rem;
+        border-left: 5px solid #ffd700;
+    }
+
+    .assignment-card h3 {
+        color: #1a237e;
+        margin-bottom: 0.5rem;
+    }
+
+    .assignment-card .meta {
+        color: #666;
+        font-size: 0.85rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .assignment-card .content {
+        color: #333;
+        line-height: 1.6;
+        margin-bottom: 0.5rem;
+    }
+
+    .class-badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: bold;
+        background: #ffd700;
+        color: #1a237e;
+        margin-right: 0.5rem;
+    }
+
+    .due-badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: bold;
+        background: #f44336;
+        color: white;
+    }
+
+    .no-assignments {
+        text-align: center;
+        padding: 3rem;
+        color: #999;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="section">
+    <h2>📝 Add New Assignment</h2>
+    <form method="POST">
+        <div class="form-group">
+            <label>Select Class / ክፍል ይምረጡ</label>
+            <select name="class_name" required>
+                {% for class_name in classes %}
+                <option value="{{ class_name }}">{{ class_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label>Assignment Title (English)</label>
+                <input type="text" name="title_en" required
+                       placeholder="e.g., Study Genesis Chapter 1">
+            </div>
+            <div class="form-group">
+                <label>የስራ ርዕስ (አማርኛ)</label>
+                <input type="text" name="title_am" required
+                       placeholder="ለምሳሌ፡ ዘፍጥረት ምዕራፍ 1 አጥኑ">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Assignment Description (English)</label>
+            <textarea name="description_en" required
+                      placeholder="Describe what students need to do..."></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>የስራ መግለጫ (አማርኛ)</label>
+            <textarea name="description_am" required
+                      placeholder="ተማሪዎች ምን ማድረግ እንዳለባቸው ይግለጹ..."></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Due Date / የመጨረሻ ቀን</label>
+            <input type="date" name="due_date" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">✅ Add Assignment</button>
+    </form>
+</div>
+
+<div class="section">
+    <h2>📋 All Assignments ({{ assignments|length }})</h2>
+
+    {% if assignments %}
+        {% for assignment in assignments %}
+        <div class="assignment-card">
+            <h3>{{ assignment[2] }} / {{ assignment[3] }}</h3>
+            <div class="meta">
+                <span class="class-badge">{{ assignment[1] }}</span>
+                <span class="due-badge">📅 Due: {{ assignment[6] }}</span>
+            </div>
+            <div class="content">
+                <strong>English:</strong> {{ assignment[4] }}
+            </div>
+            <div class="content">
+                <strong>አማርኛ:</strong> {{ assignment[5] }}
+            </div>
+            <a href="{{ url_for('grade_submissions', assignment_id=assignment[0]) }}"
+               class="btn btn-info">
+                📊 View Submissions
+            </a>
+        </div>
+        {% endfor %}
+    {% else %}
+    <div class="no-assignments">
+        <h3>📭 No assignments yet</h3>
+        <p>Add your first assignment above!</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

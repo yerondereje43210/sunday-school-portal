@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<style>
+    .section {
+        background: white;
+        padding: 2rem;
+        border-radius: 10px;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .section h2 {
+        color: #1a237e;
+        margin-bottom: 1.5rem;
+        border-bottom: 3px solid #ffd700;
+        padding-bottom: 0.5rem;
+    }
+
+    .date-selector {
+        margin-bottom: 2rem;
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    .date-selector input {
+        padding: 0.75rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 5px;
+        font-size: 1rem;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+    }
+
+    .table th {
+        background: #1a237e;
+        color: white;
+        padding: 1rem;
+        text-align: left;
+        border-bottom: 3px solid #ffd700;
+    }
+
+    .table td {
+        padding: 1rem;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .table tr:hover {
+        background: #f5f5f5;
+    }
+
+    .class-badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: bold;
+        background: #ffd700;
+        color: #1a237e;
+    }
+
+    .attendance-radio {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .attendance-radio label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+    }
+
+    .attendance-radio input[type="radio"] {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+    }
+
+    .btn {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s;
+        font-weight: bold;
+    }
+
+    .btn-primary {
+        background: linear-gradient(90deg, #1a237e 0%, #0d47a1 100%);
+        color: white;
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(26, 35, 126, 0.3);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="section">
+    <h2>✅ Mark Attendance</h2>
+
+    <form method="POST">
+        <div class="date-selector">
+            <label><strong>Date:</strong></label>
+            <input type="date" name="date" value="{{ today }}" required>
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Student Name</th>
+                    <th>Class</th>
+                    <th>Attendance Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td>{{ student[3] }}</td>
+                    <td><span class="class-badge">{{ student[4] }}</span></td>
+                    <td>
+                        <div class="attendance-radio">
+                            <label>
+                                <input type="radio" name="status_{{ student[0] }}" value="present" checked>
+                                ✅ Present
+                            </label>
+                            <label>
+                                <input type="radio" name="status_{{ student[0] }}" value="absent">
+                                ❌ Absent
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <button type="submit" class="btn btn-primary" style="margin-top: 1rem;">💾 Save Attendance</button>
+    </form>
+</div>
+{% endblock %}
