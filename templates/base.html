@@ -35,17 +35,13 @@
             background: #FFFFFF;
             padding: 0 2rem;
             height: 70px;
-
             display: flex;
             justify-content: space-between;
             align-items: center;
-
             box-shadow: 0 2px 20px rgba(0,0,0,0.08);
-
             position: sticky;
             top: 0;
             z-index: 1000;
-
             border-bottom: 3px solid #0EA5E9;
         }
 
@@ -109,28 +105,94 @@
             background: #0EA5E9 !important;
         }
 
-        /* ================= MOBILE MENU ================= */
+        /* ================= HAMBURGER ================= */
 
         .hamburger {
             display: none;
             flex-direction: column;
-            gap: 4px;
+            gap: 5px;
             cursor: pointer;
+            padding: 6px;
+            border-radius: 6px;
+            transition: background 0.2s;
+            background: none;
+            border: none;
+        }
+
+        .hamburger:hover {
+            background: #F0F9FF;
         }
 
         .hamburger span {
+            display: block;
             width: 25px;
-            height: 2px;
+            height: 3px;
             background: #0C1B33;
+            border-radius: 3px;
+            transition: all 0.3s ease;
         }
+
+        /* Animate to X when open */
+        .hamburger.active span:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+        }
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.active span:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+
+        /* ================= MOBILE MENU ================= */
 
         .mobile-menu {
             display: none;
+            flex-direction: column;
+            background: #FFFFFF;
+            border-bottom: 3px solid #0EA5E9;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            padding: 0.75rem 1rem;
+            position: sticky;
+            top: 70px;
+            z-index: 999;
         }
 
         .mobile-menu.open {
             display: flex;
-            flex-direction: column;
+        }
+
+        .mobile-menu a {
+            color: #0C1B33;
+            text-decoration: none;
+            padding: 0.85rem 1rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: 0.2s;
+            border-bottom: 1px solid #F1F5F9;
+        }
+
+        .mobile-menu a:last-child {
+            border-bottom: none;
+        }
+
+        .mobile-menu a:hover {
+            background: #F0F9FF;
+            color: #0EA5E9;
+            padding-left: 1.4rem;
+        }
+
+        .mobile-menu .logout-btn {
+            background: #0C1B33 !important;
+            color: white !important;
+            text-align: center;
+            margin-top: 0.5rem;
+            border-bottom: none !important;
+        }
+
+        .mobile-menu .logout-btn:hover {
+            background: #0EA5E9 !important;
+            padding-left: 1rem !important;
         }
 
         /* ================= MAIN CONTAINER ================= */
@@ -179,12 +241,10 @@
         .footer-inner {
             max-width: 1200px;
             margin: auto;
-
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-
             gap: 1.5rem;
         }
 
@@ -224,29 +284,15 @@
             gap: 10px;
         }
 
-        /* ================= FIXED COMPANY LOGO ================= */
-
         .footer-right img {
-    width: 55px;
-    height: 55px;
-
-    object-fit: cover;
-
-    border-radius: 50%;
-
-    background: white;
-    padding: 5px;
-
-    border: 3px solid #0EA5E9;
-
-    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-
-    opacity: 1;
-}
-
+            width: 55px;
+            height: 55px;
+            object-fit: cover;
+            border-radius: 50%;
             background: white;
-            padding: 4px;
-            border-radius: 6px;
+            padding: 5px;
+            border: 3px solid #0EA5E9;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
         }
 
         .footer-right span {
@@ -270,13 +316,13 @@
                 display: flex;
             }
 
+            .navbar-brand-text {
+                display: none;
+            }
+
             .footer-inner {
                 flex-direction: column;
                 text-align: center;
-            }
-
-            .navbar-brand-text {
-                display: none;
             }
         }
 
@@ -292,61 +338,64 @@
 <nav class="navbar">
 
     <a href="{{ url_for('index') }}" class="navbar-brand">
-
-        <img src="{{ url_for('static', filename='img/church_logo.png') }}"
-             alt="Church Logo">
-
+        <img src="{{ url_for('static', filename='img/church_logo.png') }}" alt="Church Logo">
         <div class="navbar-brand-text">
             <span>የባቴ ቅዱስ አማኑኤል ካቴድራል ሆኅተ ብርሃን ሰ/ት/ቤት</span>
             <span>Sunday School LMS</span>
         </div>
-
     </a>
 
+    <!-- Desktop menu -->
     <div class="navbar-menu">
-
         {% if current_user.is_admin %}
-
             <a href="{{ url_for('admin_dashboard') }}">Dashboard / ዳሽቦርድ</a>
             <a href="{{ url_for('admin_attendance') }}">Attendance / አቴንዳንስ</a>
             <a href="{{ url_for('admin_lessons') }}">Lessons / ትምህርቶች</a>
             <a href="{{ url_for('admin_assignments') }}">Assignments / አሳይመንቶች</a>
-
         {% else %}
-
             <a href="{{ url_for('student_dashboard') }}">Home / ሆም</a>
             <a href="{{ url_for('student_lessons') }}">Lessons / ትምህርቶች</a>
             <a href="{{ url_for('student_assignments') }}">Assignments / አሳይመንቶች</a>
             <a href="{{ url_for('student_progress') }}">Progress / ለውጦች</a>
-
         {% endif %}
-
-        <a href="{{ url_for('logout') }}" class="logout-btn">
-            Logout / ውጣ
-        </a>
-
+        <a href="{{ url_for('logout') }}" class="logout-btn">Logout / ውጣ</a>
     </div>
 
+    <!-- Hamburger button (mobile only) -->
+    <button class="hamburger" id="hamburgerBtn" onclick="toggleMenu()" aria-label="Toggle menu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
 </nav>
+
+<!-- Mobile dropdown menu -->
+<div class="mobile-menu" id="mobileMenu">
+    {% if current_user.is_admin %}
+        <a href="{{ url_for('admin_dashboard') }}">📊 Dashboard / ዳሽቦርድ</a>
+        <a href="{{ url_for('admin_attendance') }}">✅ Attendance / አቴንዳንስ</a>
+        <a href="{{ url_for('admin_lessons') }}">📚 Lessons / ትምህርቶች</a>
+        <a href="{{ url_for('admin_assignments') }}">📝 Assignments / አሳይመንቶች</a>
+    {% else %}
+        <a href="{{ url_for('student_dashboard') }}">🏠 Home / ሆም</a>
+        <a href="{{ url_for('student_lessons') }}">📚 Lessons / ትምህርቶች</a>
+        <a href="{{ url_for('student_assignments') }}">📝 Assignments / አሳይመንቶች</a>
+        <a href="{{ url_for('student_progress') }}">📈 Progress / ለውጦች</a>
+    {% endif %}
+    <a href="{{ url_for('logout') }}" class="logout-btn">🚪 Logout / ውጣ</a>
+</div>
 
 {% endif %}
 
 <div class="container">
 
     {% with messages = get_flashed_messages(with_categories=true) %}
-
         {% if messages %}
-
             {% for category, message in messages %}
-
-                <div class="alert alert-{{ category }}">
-                    {{ message }}
-                </div>
-
+                <div class="alert alert-{{ category }}">{{ message }}</div>
             {% endfor %}
-
         {% endif %}
-
     {% endwith %}
 
     {% block content %}{% endblock %}
@@ -354,71 +403,62 @@
 </div>
 
 <footer class="footer">
-
     <div class="footer-inner">
 
         <div class="footer-left">
-
-            <img src="{{ url_for('static', filename='img/church_logo.png') }}"
-                 alt="Church Logo">
-
+            <img src="{{ url_for('static', filename='img/church_logo.png') }}" alt="Church Logo">
             <div class="footer-left-text">
-
                 <h4>የባቴ ቅዱስ አማኑኤል ካቴድራል</h4>
-
                 <p>ሆኅተ ብርሃን ሰንበት ት/ቤት</p>
-
             </div>
-
         </div>
 
         <div class="footer-center">
-
-            <p>
-                &copy; 2026 Sunday School LMS.
-                All rights reserved.
-            </p>
-
+            <p>&copy; 2026 Sunday School LMS. All rights reserved.</p>
         </div>
 
         <div class="footer-right">
-
-            <img src="{{ url_for('static', filename='img/smart_logo.png') }}"
-                 alt="Smart Technologies">
-
+            <img src="{{ url_for('static', filename='img/smart_logo.png') }}" alt="Smart Technologies">
             <span>Powered by Smart Technologies</span>
-
         </div>
 
     </div>
-
 </footer>
 
 <script>
 
     function toggleMenu() {
-
         const menu = document.getElementById('mobileMenu');
-
-        if (menu) {
-            menu.classList.toggle('open');
-        }
+        const btn = document.getElementById('hamburgerBtn');
+        menu.classList.toggle('open');
+        btn.classList.toggle('active');
     }
 
-    setTimeout(() => {
-
-        document.querySelectorAll('.alert').forEach(alertBox => {
-
-            alertBox.style.transition = 'opacity 0.5s';
-
-            alertBox.style.opacity = '0';
-
-            setTimeout(() => {
-                alertBox.remove();
-            }, 500);
-
+    // Close mobile menu when a link is clicked
+    document.querySelectorAll('.mobile-menu a').forEach(link => {
+        link.addEventListener('click', () => {
+            document.getElementById('mobileMenu').classList.remove('open');
+            document.getElementById('hamburgerBtn').classList.remove('active');
         });
+    });
 
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', function(e) {
+        const menu = document.getElementById('mobileMenu');
+        const btn = document.getElementById('hamburgerBtn');
+        if (menu && btn && !menu.contains(e.target) && !btn.contains(e.target)) {
+            menu.classList.remove('open');
+            btn.classList.remove('active');
+        }
+    });
+
+    // Auto-dismiss alerts
+    setTimeout(() => {
+        document.querySelectorAll('.alert').forEach(alertBox => {
+            alertBox.style.transition = 'opacity 0.5s';
+            alertBox.style.opacity = '0';
+            setTimeout(() => alertBox.remove(), 500);
+        });
     }, 4000);
 
 </script>
