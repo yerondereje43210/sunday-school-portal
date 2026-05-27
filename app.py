@@ -127,13 +127,13 @@ def init_db():
 
 # ── Classes ── (Membership Affairs Class added)
 CLASSES = [
-    'Doctrine Class',
-    'Prosperity Class',
-    'Philanthropy Class',
-    'Hymn Class',
-    'Literature Class',
-    'Membership Affairs Class',
-    'Board of Directors'
+    'የትምህርት ክፍል/Doctrine Class',
+    'የልማት ክፍል/Development Class',
+    'የበጎ አድራጎት ክፍል/Charity Class',
+    'የመዝሙር ክፍል/Hymn Class',
+    'የኪነ ጥበብ/Art Class',
+    'የአባልነት ጉዳዮች ክፍል/Membership Affairs Class',
+    'የሥራ አስፈፃሚዎች ክፍል /Executive Class'
 ]
 
 
