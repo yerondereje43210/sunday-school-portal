@@ -1,421 +1,600 @@
-
-
 {% extends "base.html" %}
 
-{% block title %}
-Login | Sunday School Portal
-{% endblock %}
+{% block title %}Login | Sunday School Portal{% endblock %}
 
 {% block extra_css %}
-
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 
-/* ================= LOGIN PAGE ================= */
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-.login-container {
-    min-height: 85vh;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    padding: 2rem;
+/* ── STRIP BASE TEMPLATE CHROME ── */
+html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100vw !important;
+    min-height: 100vh !important;
+    overflow-x: hidden;
+    background: #000 !important;
 }
 
-.login-card {
-    width: 100%;
-    max-width: 1050px;
+nav, header, footer,
+.navbar, .nav, .topbar,
+.site-header, .site-footer { display: none !important; }
 
+main, .main, .content,
+.container, .wrapper,
+.page-wrapper, .page-content {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100vw !important;
+    width: 100vw !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+/* ── FULL-BLEED LOGIN SCENE ── */
+.login-scene {
+    width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    font-family: 'DM Sans', sans-serif;
+}
+
+/* Student photo background */
+.login-scene::before {
+    content: "";
+    position: absolute;
+    inset: -20px;                      /* extra space so blur doesn't show edges */
+    background:
+        url("{{ url_for('static', filename='img/img.png') }}")
+        center / cover no-repeat;
+    filter: blur(5px) brightness(0.45) saturate(0.8);
+    transform: scale(1.05);            /* compensate for blur edge softening */
+    z-index: 0;
+}
+
+/* Subtle grain overlay for depth */
+.login-scene::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* ── GLASS CARD ── */
+.login-card {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 1040px;
     display: grid;
     grid-template-columns: 1fr 1fr;
-
-    background: #FFFFFF;
-
-    border-radius: 30px;
-
+    border-radius: 28px;
     overflow: hidden;
-
     box-shadow:
-        0 25px 60px rgba(0,0,0,0.12),
-        0 12px 30px rgba(14,165,233,0.12);
+        0 40px 80px rgba(0,0,0,0.55),
+        0 0 0 1px rgba(255,255,255,0.07),
+        inset 0 1px 0 rgba(255,255,255,0.1);
 
-    position: relative;
+    /* staggered reveal — card itself fades in */
+    animation: cardReveal 0.7s cubic-bezier(0.22,1,0.36,1) both;
 }
 
-/* ================= LEFT SIDE ================= */
+@keyframes cardReveal {
+    from { opacity: 0; transform: translateY(28px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0)   scale(1); }
+}
 
+/* shake trigger class */
+.login-card.shake {
+    animation: shake 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes shake {
+    0%,100% { transform: translateX(0); }
+    15%      { transform: translateX(-10px) rotate(-0.5deg); }
+    30%      { transform: translateX(10px)  rotate(0.5deg); }
+    45%      { transform: translateX(-8px)  rotate(-0.3deg); }
+    60%      { transform: translateX(8px)   rotate(0.3deg); }
+    75%      { transform: translateX(-5px); }
+    90%      { transform: translateX(5px);  }
+}
+
+/* ── LEFT PANEL ── */
 .login-left {
-
     background:
         linear-gradient(
-            135deg,
-            #0C1B33 0%,
-            #0EA5E9 100%
+            160deg,
+            rgba(10, 18, 42, 0.92) 0%,
+            rgba(15, 52, 90, 0.88) 100%
         );
-
-    color: white;
-
-    padding: 4rem 3rem;
-
+    backdrop-filter: blur(20px) saturate(1.4);
+    -webkit-backdrop-filter: blur(20px) saturate(1.4);
+    border-right: 1px solid rgba(255,255,255,0.07);
+    padding: 4.5rem 3rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
     text-align: center;
-
+    gap: 1.6rem;
     position: relative;
-
     overflow: hidden;
 }
 
+/* Decorative arc */
 .login-left::before {
-
     content: "";
-
     position: absolute;
-
-    width: 350px;
-    height: 350px;
-
-    background: rgba(255,255,255,0.08);
-
+    width: 340px; height: 340px;
     border-radius: 50%;
-
-    top: -140px;
-    right: -140px;
+    border: 1px solid rgba(201,168,90,0.18);
+    top: -80px; right: -80px;
+    pointer-events: none;
 }
-
 .login-left::after {
-
     content: "";
-
     position: absolute;
-
-    width: 220px;
-    height: 220px;
-
-    background: rgba(255,255,255,0.06);
-
+    width: 220px; height: 220px;
     border-radius: 50%;
-
-    bottom: -90px;
-    left: -90px;
+    border: 1px solid rgba(201,168,90,0.12);
+    bottom: -60px; left: -60px;
+    pointer-events: none;
 }
 
-.login-logo {
-
-    width: 130px;
-    height: 130px;
-
+.logo-ring {
+    width: 110px; height: 110px;
     border-radius: 50%;
+    padding: 5px;
+    background: linear-gradient(135deg, #C9A85A, #f0d48a, #C9A85A);
+    box-shadow: 0 0 0 1px rgba(201,168,90,0.3), 0 12px 30px rgba(201,168,90,0.25);
+    animation: cardReveal 0.7s 0.15s cubic-bezier(0.22,1,0.36,1) both;
+}
 
+.logo-ring img {
+    width: 100%; height: 100%;
+    border-radius: 50%;
     object-fit: cover;
-
-    background: white;
-
-    padding: 8px;
-
-    border: 4px solid rgba(255,255,255,0.2);
-
-    margin-bottom: 2rem;
-
-    z-index: 2;
+    display: block;
 }
 
-.login-left h1 {
-
-    font-size: 2rem;
-    font-weight: 800;
-
-    margin-bottom: 1rem;
-
-    z-index: 2;
+.left-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.55rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    line-height: 1.4;
+    z-index: 1;
+    animation: cardReveal 0.7s 0.25s cubic-bezier(0.22,1,0.36,1) both;
 }
 
-.login-left p {
+.left-divider {
+    width: 48px; height: 2px;
+    background: linear-gradient(90deg, transparent, #C9A85A, transparent);
+    z-index: 1;
+}
 
-    font-size: 1rem;
-
-    line-height: 1.7;
-
-    color: rgba(255,255,255,0.88);
-
-    max-width: 340px;
-
-    z-index: 2;
+.left-desc {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.72);
+    line-height: 1.8;
+    max-width: 280px;
+    z-index: 1;
+    animation: cardReveal 0.7s 0.35s cubic-bezier(0.22,1,0.36,1) both;
 }
 
 .portal-badge {
-
-    margin-top: 2rem;
-
-    background: rgba(255,255,255,0.12);
-
-    padding: 0.9rem 1.5rem;
-
+    margin-top: 0.5rem;
+    padding: 0.65rem 1.4rem;
     border-radius: 999px;
-
-    font-size: 0.9rem;
+    border: 1px solid rgba(201,168,90,0.4);
+    background: rgba(201,168,90,0.1);
+    font-size: 0.8rem;
     font-weight: 600;
-
-    backdrop-filter: blur(10px);
-
-    z-index: 2;
+    color: #C9A85A;
+    letter-spacing: 0.05em;
+    z-index: 1;
+    animation: cardReveal 0.7s 0.45s cubic-bezier(0.22,1,0.36,1) both;
 }
 
-/* ================= RIGHT SIDE ================= */
-
+/* ── RIGHT PANEL ── */
 .login-right {
-
-    padding: 4rem;
-
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(30px) saturate(1.6);
+    -webkit-backdrop-filter: blur(30px) saturate(1.6);
+    padding: 4.5rem 3.5rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    gap: 0;
 }
 
-.login-right h2 {
-
-    font-size: 2.4rem;
-    font-weight: 800;
-
-    color: #0C1B33;
-
-    margin-bottom: 0.5rem;
+.right-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.6rem;
+    font-weight: 700;
+    color: #FFFFFF;
+    line-height: 1.1;
+    animation: cardReveal 0.7s 0.2s cubic-bezier(0.22,1,0.36,1) both;
 }
 
-.login-subtitle {
-
-    color: #64748B;
-
-    margin-bottom: 2.5rem;
-
-    font-size: 1rem;
+.right-sub {
+    font-size: 0.92rem;
+    color: rgba(255,255,255,0.5);
+    margin-top: 0.5rem;
+    margin-bottom: 2.8rem;
+    animation: cardReveal 0.7s 0.3s cubic-bezier(0.22,1,0.36,1) both;
 }
 
-/* ================= FORM ================= */
-
-.login-form {
-
+/* ── FLASH MESSAGES ── */
+.alerts {
+    margin-bottom: 1.2rem;
     display: flex;
     flex-direction: column;
-
-    gap: 1.5rem;
+    gap: 0.5rem;
+    animation: cardReveal 0.4s ease both;
 }
 
-.form-group {
-
-    display: flex;
-    flex-direction: column;
+.alert {
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 500;
 }
 
-.form-group label {
-
-    font-size: 0.95rem;
-    font-weight: 600;
-
-    margin-bottom: 0.6rem;
-
-    color: #0F172A;
+.alert-danger {
+    background: rgba(239,68,68,0.18);
+    border: 1px solid rgba(239,68,68,0.4);
+    color: #fca5a5;
 }
 
-.form-group input {
+.alert-success {
+    background: rgba(34,197,94,0.15);
+    border: 1px solid rgba(34,197,94,0.3);
+    color: #86efac;
+}
 
+/* ── KINETIC INPUT FOCUS ── */
+.field-wrap {
+    position: relative;
+    margin-bottom: 1.6rem;
+    animation: fieldSlideIn 0.6s cubic-bezier(0.22,1,0.36,1) both;
+}
+
+.field-wrap:nth-child(1) { animation-delay: 0.35s; }
+.field-wrap:nth-child(2) { animation-delay: 0.45s; }
+
+@keyframes fieldSlideIn {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.field-wrap input {
+    width: 100%;
     height: 58px;
-
-    border: 1px solid #CBD5E1;
-
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.15);
     border-radius: 14px;
-
-    padding: 0 1rem;
-
+    padding: 22px 1.1rem 8px;
     font-size: 1rem;
-
-    background: #F8FAFC;
-
-    transition: all 0.25s ease;
-}
-
-.form-group input:focus {
-
+    font-family: 'DM Sans', sans-serif;
+    color: #FFFFFF;
     outline: none;
-
-    border-color: #0EA5E9;
-
-    background: white;
-
-    box-shadow: 0 0 0 4px rgba(14,165,233,0.15);
+    transition:
+        border-color 0.3s ease,
+        background 0.3s ease,
+        box-shadow 0.3s ease;
+    caret-color: #C9A85A;
 }
 
-/* ================= BUTTON ================= */
+.field-wrap input::placeholder {
+    color: transparent; /* hidden — label acts as placeholder */
+}
+
+/* Floating label */
+.field-wrap label {
+    position: absolute;
+    left: 1.1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.95rem;
+    font-family: 'DM Sans', sans-serif;
+    color: rgba(255,255,255,0.45);
+    pointer-events: none;
+    transition:
+        top 0.25s cubic-bezier(0.22,1,0.36,1),
+        font-size 0.25s ease,
+        color 0.25s ease,
+        transform 0.25s ease;
+}
+
+/* Label floats up when focused OR filled */
+.field-wrap input:focus ~ label,
+.field-wrap input:not(:placeholder-shown) ~ label {
+    top: 10px;
+    transform: translateY(0);
+    font-size: 0.72rem;
+    color: #C9A85A;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+}
+
+/* Active border glow */
+.field-wrap input:focus {
+    border-color: #C9A85A;
+    background: rgba(255,255,255,0.1);
+    box-shadow:
+        0 0 0 3px rgba(201,168,90,0.18),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+/* Password field — eye toggle */
+.field-wrap .eye-btn {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: rgba(255,255,255,0.4);
+    padding: 4px;
+    transition: color 0.2s ease;
+    display: flex;
+    align-items: center;
+}
+
+.field-wrap .eye-btn:hover { color: #C9A85A; }
+
+.field-wrap .eye-btn svg {
+    width: 18px; height: 18px;
+    transition: transform 0.2s ease;
+}
+
+.field-wrap .eye-btn:active svg { transform: scale(0.85); }
+
+/* ── SUBMIT BUTTON ── */
+.login-btn-wrap {
+    margin-top: 0.4rem;
+    animation: fieldSlideIn 0.6s 0.55s cubic-bezier(0.22,1,0.36,1) both;
+}
 
 .login-btn {
-
-    height: 58px;
-
+    width: 100%;
+    height: 56px;
     border: none;
-
     border-radius: 14px;
-
-    background:
-        linear-gradient(
-            135deg,
-            #0C1B33,
-            #0EA5E9
-        );
-
-    color: white;
-
+    background: linear-gradient(135deg, #C9A85A 0%, #f0d48a 50%, #C9A85A 100%);
+    background-size: 200% 200%;
+    color: #0A0F1E;
     font-size: 1rem;
     font-weight: 700;
-
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.04em;
     cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        background-position 0.4s ease;
+    box-shadow: 0 8px 24px rgba(201,168,90,0.3);
+}
 
-    transition: all 0.3s ease;
-
-    margin-top: 0.5rem;
-
-    box-shadow: 0 10px 25px rgba(14,165,233,0.25);
+.login-btn::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0);
+    transition: background 0.2s ease;
 }
 
 .login-btn:hover {
-
     transform: translateY(-2px);
-
-    box-shadow: 0 15px 30px rgba(14,165,233,0.35);
+    box-shadow: 0 14px 32px rgba(201,168,90,0.45);
+    background-position: right center;
 }
+
+.login-btn:hover::before { background: rgba(255,255,255,0.1); }
 
 .login-btn:active {
-
-    transform: scale(0.98);
+    transform: scale(0.97);
+    box-shadow: 0 4px 12px rgba(201,168,90,0.2);
 }
 
-/* ================= RESPONSIVE ================= */
-
-@media (max-width: 900px) {
-
-    .login-card {
-
-        grid-template-columns: 1fr;
-    }
-
-    .login-left,
-    .login-right {
-
-        padding: 3rem 2rem;
-    }
-
-    .login-right h2 {
-
-        font-size: 2rem;
-    }
+/* Ripple */
+.login-btn .ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.35);
+    width: 0; height: 0;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    animation: rippleAnim 0.55s ease-out forwards;
 }
 
-@media (max-width: 500px) {
+@keyframes rippleAnim {
+    to { width: 300px; height: 300px; opacity: 0; }
+}
 
-    .login-container {
+/* ── RESPONSIVE ── */
+@media (max-width: 860px) {
+    .login-card { grid-template-columns: 1fr; max-width: 460px; }
+    .login-left { padding: 3rem 2rem; }
+    .login-right { padding: 3rem 2rem; }
+    .right-heading { font-size: 2rem; }
+}
 
-        padding: 1rem;
-    }
-
-    .login-left h1 {
-
-        font-size: 1.6rem;
-    }
-
-    .login-right {
-
-        padding: 2.5rem 1.5rem;
-    }
+@media (max-width: 480px) {
+    .login-scene { padding: 1rem; }
+    .left-title { font-size: 1.25rem; }
+    .right-heading { font-size: 1.75rem; }
+    .login-right { padding: 2.5rem 1.5rem; }
 }
 
 </style>
-
 {% endblock %}
 
 {% block content %}
 
-<div class="login-container">
+<div class="login-scene">
+    <div class="login-card" id="loginCard">
 
-    <div class="login-card">
-
-        <!-- LEFT SIDE -->
-
+        <!-- ── LEFT PANEL ── -->
         <div class="login-left">
-
-            <img
-                src="{{ url_for('static', filename='img/church_logo.png') }}"
-                alt="Church Logo"
-                class="login-logo"
-            >
-
-            <h1>
-                የባቴ ቅዱስ አማኑኤል ካቴድራል ሆኅተ ብርሃን ሰ/ት/ቤት
-            </h1>
-
-            <p>
-                እንኳን ወደ ሰንበት ትምህርት ቤታችን ፖርታል በሰላም መጡ።
-                የተጠቃሚ ስምዎን (Username) እና የይለፍ ቃልዎን (Password) በማስገባት የተለያዩ የሰንበት
-                ትምህርት ቤታችን ሀብቶችን ያግኙ።
-
-
-            </p>
-
-            <div class="portal-badge">
-                የሰንበት ትምህርት ቤት ፖርታል
+            <div class="logo-ring">
+                <img
+                    src="{{ url_for('static', filename='img/church_logo.png') }}"
+                    alt="Church Logo"
+                >
             </div>
 
-        </div>
+            <h1 class="left-title">
+                የባቴ ቅዱስ አማኑኤል ካቴድራል<br>
+                ሆኅተ ብርሃን ሰ/ት/ቤት
+            </h1>
 
-        <!-- RIGHT SIDE -->
+            <div class="left-divider"></div>
 
-        <div class="login-right">
-
-            <h2>እንኳን ደህና መጣችሁ</h2>
-
-            <p class="login-subtitle">
-              ፖርታልዎን ለመጠቀም ይግቡ
+            <p class="left-desc">
+                እንኳን ወደ ሰንበት ትምህርት ቤታችን ፖርታል በሰላም መጡ።
+                የተጠቃሚ ስምዎን እና የይለፍ ቃልዎን በማስገባት ይግቡ።
             </p>
 
-            <form method="POST" class="login-form">
+            <div class="portal-badge">✦ የሰንበት ትምህርት ቤት ፖርታል</div>
+        </div>
 
-                <div class="form-group">
+        <!-- ── RIGHT PANEL ── -->
+        <div class="login-right">
+            <h2 class="right-heading">እንኳን<br>ደህና መጡ</h2>
+            <p class="right-sub">ፖርታልዎን ለመጠቀም ይግቡ</p>
 
-                    <label>Username</label>
+            <!-- Flash messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="alerts">
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
 
+            <form method="POST" id="loginForm" autocomplete="off">
+
+                <!-- Username -->
+                <div class="field-wrap">
                     <input
                         type="text"
                         name="username"
-                        placeholder="የመጠቀሚያ ስምዎን ያስገቡ"
+                        id="username"
+                        placeholder=" "
                         required
+                        autocomplete="username"
                     >
-
+                    <label for="username">Username</label>
                 </div>
 
-                <div class="form-group">
-
-                    <label>Password</label>
-
+                <!-- Password -->
+                <div class="field-wrap">
                     <input
                         type="password"
                         name="password"
-                        placeholder="የይለፍ ቃልዎን ያስገቡ"
+                        id="password"
+                        placeholder=" "
                         required
+                        autocomplete="current-password"
+                        style="padding-right: 3rem;"
                     >
-
+                    <label for="password">Password</label>
+                    <button
+                        type="button"
+                        class="eye-btn"
+                        id="eyeBtn"
+                        aria-label="Toggle password visibility"
+                    >
+                        <!-- Eye open -->
+                        <svg id="eyeOpen" xmlns="http://www.w3.org/2000/svg" fill="none"
+                             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                        <!-- Eye closed (hidden by default) -->
+                        <svg id="eyeClosed" xmlns="http://www.w3.org/2000/svg" fill="none"
+                             viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
+                             style="display:none;">
+                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8
+                                     a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0
+                                     1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72
+                                     -1.07a3 3 0 1 1-4.24-4.24"/>
+                            <line x1="1" y1="1" x2="23" y2="23"/>
+                        </svg>
+                    </button>
                 </div>
 
-                <button type="submit" class="login-btn">
-                    ይግቡ
-                </button>
+                <!-- Submit -->
+                <div class="login-btn-wrap">
+                    <button type="submit" class="login-btn" id="submitBtn">
+                        ይግቡ
+                    </button>
+                </div>
 
             </form>
-
         </div>
-
     </div>
-
 </div>
+
+<script>
+(function () {
+
+    /* ── Password eye toggle ── */
+    const pwField  = document.getElementById('password');
+    const eyeBtn   = document.getElementById('eyeBtn');
+    const eyeOpen  = document.getElementById('eyeOpen');
+    const eyeClosed= document.getElementById('eyeClosed');
+
+    eyeBtn.addEventListener('click', function () {
+        const isPassword = pwField.type === 'password';
+        pwField.type     = isPassword ? 'text' : 'password';
+        eyeOpen.style.display  = isPassword ? 'none'  : '';
+        eyeClosed.style.display= isPassword ? ''      : 'none';
+    });
+
+    /* ── Ripple on submit button ── */
+    const btn = document.getElementById('submitBtn');
+    btn.addEventListener('click', function (e) {
+        const ripple = document.createElement('span');
+        ripple.className = 'ripple';
+        const rect = btn.getBoundingClientRect();
+        ripple.style.left = (e.clientX - rect.left) + 'px';
+        ripple.style.top  = (e.clientY - rect.top)  + 'px';
+        btn.appendChild(ripple);
+        setTimeout(() => ripple.remove(), 600);
+    });
+
+    /* ── Shake on error (triggered if flash danger exists) ── */
+    const hasError = document.querySelector('.alert-danger');
+    if (hasError) {
+        const card = document.getElementById('loginCard');
+        card.classList.add('shake');
+        card.addEventListener('animationend', function handler(e) {
+            if (e.animationName === 'shake') {
+                card.classList.remove('shake');
+                card.removeEventListener('animationend', handler);
+            }
+        });
+    }
+
+})();
+</script>
 
 {% endblock %}

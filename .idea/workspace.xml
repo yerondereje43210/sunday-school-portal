@@ -5,8 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d9d0f7ac-d89f-4837-9340-dbc9ffb24ef2" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/static/img/img.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/admin.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/admin_assignments.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin_assignments.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/admin_attendance.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin_attendance.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/admin_grade.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin_grade.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/admin_lessons.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/admin_lessons.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/student.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/student.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/student_assignments.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/student_assignments.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,6 +55,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Yeron Dereje\PycharmProjects\PythonProject3\static\img" />
       <recent name="C:\Users\Yeron Dereje\PycharmProjects\PythonProject3" />
       <recent name="C:\Users\Yeron Dereje\PycharmProjects\PythonProject3\templates\static\img" />
     </key>

@@ -445,7 +445,7 @@
 
 <div class="page-header">
     <div class="assignment-icon">📖</div>
-    <p class="section-label">My Assignments</p>
+    <p class="section-label">My Assignments / የእኔ አሳይመንቶች</p>
     <h1 class="page-title">{{ current_user.class_name }}.</h1>
     <p class="subtitle">ሆኅተ ብርሃን ሰንበት ት/ቤት</p>
 </div>
@@ -461,13 +461,12 @@
             <div class="badge-container">
                 <span class="badge badge-due">⏰ Due: {{ assignment[6] }}</span>
                 {% if assignment[0] in submitted %}
-                <span class="badge badge-submitted">✓ Submitted</span>
+                <span class="badge badge-submitted">✓ Submitted / ተልኳል</span>
                 {% endif %}
             </div>
         </div>
 
         <div class="question-container">
-            <p class="question-text"><strong>English:</strong> {{ assignment[4] }}</p>
             <p class="question-text"><strong>አማርኛ:</strong> {{ assignment[5] }}</p>
         </div>
 
@@ -477,19 +476,21 @@
                 <label>Your Answer / መልስዎ</label>
                 <textarea name="content" placeholder="Write your thoughtful answer here..." required></textarea>
             </div>
-            <button type="submit" class="submit-button">Submit Assignment →</button>
+            <button type="submit" class="submit-button">አሳይመንቱን ላክ / Submit Assignment →</button>
         </form>
         {% else %}
         <div class="submitted-notice">
             <p>You have already submitted this assignment. Great work!</p>
+            <p>ይህንን አሳይመንት በተሳካ ሁኔታ ልከሃል/ሻል። ጎበዝ!</p>
         </div>
         {% endif %}
     </div>
     {% endfor %}
 {% else %}
 <div class="empty-state">
-    <h3>No assignments yet.</h3>
+    <h3>No assignments yet. / እስካሁን ምንም አይነት አሳይመንት የለም።</h3>
     <p>Your teacher has not posted any assignments yet. Check back soon!</p>
+    <p>አስተማሪዎ እስካሁን ምንም አይነት አሳይመንቶችን አልለቀቀም። በቅርቡ ተመልሰው ይመልከቱ!</p>
 </div>
 {% endif %}
 

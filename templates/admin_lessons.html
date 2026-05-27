@@ -109,7 +109,7 @@
 
 {% block content %}
 <div class="section">
-    <h2>📖 Add New Lesson</h2>
+    <h2>📖 Add New Lesson / አዲስ ትምህርት ጨምር</h2>
     <form method="POST">
         <div class="form-group">
             <label>Select Class / ክፍል ይምረጡ</label>
@@ -122,40 +122,28 @@
 
         <div class="form-row">
             <div class="form-group">
-                <label>Lesson Title (English)</label>
-                <input type="text" name="title_en" required placeholder="e.g., Introduction to Doctrine">
-            </div>
-            <div class="form-group">
-                <label>የትምህርት ርዕስ (አማርኛ)</label>
+                <label>Lesson Title / የትምህርት ርዕስ</label>
                 <input type="text" name="title_am" required placeholder="ለምሳሌ፡ ትምህርት መግቢያ">
             </div>
         </div>
 
         <div class="form-group">
-            <label>Lesson Content (English)</label>
-            <textarea name="content_en" required placeholder="Write the lesson content in English..."></textarea>
-        </div>
-
-        <div class="form-group">
-            <label>የትምህርት ይዘት (አማርኛ)</label>
+            <label>Lesson Content / የትምህርት ይዘት</label>
             <textarea name="content_am" required placeholder="የትምህርቱን ይዘት በአማርኛ ይጻፉ..."></textarea>
         </div>
 
-        <button type="submit" class="btn btn-primary">✅ Add Lesson</button>
+        <button type="submit" class="btn btn-primary">✅ Add Lesson / ትምህርት ጨምር</button>
     </form>
 </div>
 
 <div class="section">
-    <h2>📚 All Lessons ({{ lessons|length }})</h2>
+    <h2>📚 All Lessons / ሁሉም ትምህርቶች ({{ lessons|length }})</h2>
     {% for lesson in lessons %}
     <div class="lesson-card">
         <h3>{{ lesson[2] }} / {{ lesson[3] }}</h3>
         <div class="meta">
             <span class="class-badge">{{ lesson[1] }}</span>
             <span>Created: {{ lesson[6][:10] }}</span>
-        </div>
-        <div class="content">
-            <strong>English:</strong> {{ lesson[4][:200] }}{% if lesson[4]|length > 200 %}...{% endif %}
         </div>
         <div class="content" style="margin-top: 0.5rem;">
             <strong>አማርኛ:</strong> {{ lesson[5][:200] }}{% if lesson[5]|length > 200 %}...{% endif %}

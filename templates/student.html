@@ -2,56 +2,52 @@
 
 {% block content %}
 <div style="margin-bottom:2.5rem;">
-    <p style="font-size:0.75rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#0EA5E9;margin-bottom:0.5rem;">Sunday School Portal</p>
+    <p style="font-size:0.75rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#0EA5E9;margin-bottom:0.5rem;">Sunday School LMS</p>
     <h1 style="font-size:2.5rem;font-weight:900;color:#0C1B33;margin-bottom:0.4rem;">Welcome, {{ current_user.full_name }}.</h1>
     <p style="font-size:1rem;color:#64748B;">{{ current_user.class_name }} &mdash; ሆኅተ ብርሃን ሰንበት ት/ቤት</p>
 </div>
 
 <div class="stats-grid" style="margin-bottom:3rem;">
     <div style="padding:2rem;border:1.5px solid #E2E8F0;border-radius:12px;background:white;transition:all 0.3s;cursor:default;" onmouseover="this.style.borderColor='#0EA5E9';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='#E2E8F0';this.style.transform='translateY(0)'">
-        <div style="font-size:2.8rem;font-weight:900;color:#0C1B33;line-height:1;">{{ "%.0f"|format(avg_score) }}%</div>
-        <div style="font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:#94A3B8;margin-top:0.5rem;">Average Quiz Score</div>
-    </div>
-    <div style="padding:2rem;border:1.5px solid #E2E8F0;border-radius:12px;background:white;transition:all 0.3s;cursor:default;" onmouseover="this.style.borderColor='#0EA5E9';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='#E2E8F0';this.style.transform='translateY(0)'">
         <div style="font-size:2.8rem;font-weight:900;color:#0C1B33;line-height:1;">{{ "%.0f"|format(attendance_pct) }}%</div>
-        <div style="font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:#94A3B8;margin-top:0.5rem;">Attendance Rate</div>
+        <div style="font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:#94A3B8;margin-top:0.5rem;">Attendance Rate / የመገኘት መጠን</div>
     </div>
     <div style="padding:2rem;border:1.5px solid #E2E8F0;border-radius:12px;background:white;transition:all 0.3s;cursor:default;" onmouseover="this.style.borderColor='#0EA5E9';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='#E2E8F0';this.style.transform='translateY(0)'">
         <div style="font-size:2.8rem;font-weight:900;color:#0C1B33;line-height:1;">{{ lessons|length }}</div>
-        <div style="font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:#94A3B8;margin-top:0.5rem;">Recent Lessons</div>
+        <div style="font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:#94A3B8;margin-top:0.5rem;">Recent Lessons / በቅርብ ጊዜ የተለቀቁ ትምህርቶች</div>
     </div>
     <div style="padding:2rem;border:1.5px solid #E2E8F0;border-radius:12px;background:white;transition:all 0.3s;cursor:default;" onmouseover="this.style.borderColor='#0EA5E9';this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='#E2E8F0';this.style.transform='translateY(0)'">
         <div style="font-size:2.8rem;font-weight:900;color:#0C1B33;line-height:1;">{{ assignments|length }}</div>
-        <div style="font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:#94A3B8;margin-top:0.5rem;">Assignments</div>
+        <div style="font-size:0.75rem;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:#94A3B8;margin-top:0.5rem;">Assignments / አሳይመንቶች</div>
     </div>
 </div>
 
 <div style="margin-bottom:1rem;">
-    <p style="font-size:0.75rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#94A3B8;margin-bottom:1.5rem;">WHAT YOU HAVE</p>
+    <p style="font-size:0.75rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#94A3B8;margin-bottom:1.5rem;">WHAT YOU HAVE / ያለህ/ሽ ነገር</p>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
         <div style="padding:2rem;border:1.5px solid #E2E8F0;border-radius:12px;background:white;">
-            <h3 style="font-size:1.1rem;font-weight:800;color:#0C1B33;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1.5px solid #F1F5F9;">Recent Lessons</h3>
+            <h3 style="font-size:1.1rem;font-weight:800;color:#0C1B33;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1.5px solid #F1F5F9;">Recent Lessons / በቅርብ ጊዜ የተለቀቁ ትምህርቶች</h3>
             {% for lesson in lessons %}
             <div style="padding:0.9rem 0;border-bottom:1px solid #F8FAFC;">
                 <div style="font-weight:700;font-size:0.9rem;color:#0C1B33;margin-bottom:0.2rem;">{{ lesson[2] }}</div>
                 <div style="font-size:0.78rem;color:#94A3B8;">{{ lesson[4][:80] }}{% if lesson[4]|length > 80 %}...{% endif %}</div>
             </div>
             {% else %}
-            <p style="color:#94A3B8;font-size:0.875rem;">No lessons posted yet.</p>
+            <p style="color:#94A3B8;font-size:0.875rem;">No lessons posted yet. /  እስካሁን ምንም ትምህርቶች አልተለቀቁም።</p>
             {% endfor %}
-            <a href="{{ url_for('student_lessons') }}" style="display:inline-block;margin-top:1.5rem;padding:0.7rem 1.5rem;background:#0C1B33;color:white;border-radius:8px;font-size:0.85rem;font-weight:700;text-decoration:none;transition:all 0.2s;" onmouseover="this.style.background='#0EA5E9'" onmouseout="this.style.background='#0C1B33'">View All Lessons</a>
+            <a href="{{ url_for('student_lessons') }}" style="display:inline-block;margin-top:1.5rem;padding:0.7rem 1.5rem;background:#0C1B33;color:white;border-radius:8px;font-size:0.85rem;font-weight:700;text-decoration:none;transition:all 0.2s;" onmouseover="this.style.background='#0EA5E9'" onmouseout="this.style.background='#0C1B33'">View All Lessons / ሁሉንም ትምህርቶች አሳይ</a>
         </div>
         <div style="padding:2rem;border:1.5px solid #E2E8F0;border-radius:12px;background:white;">
-            <h3 style="font-size:1.1rem;font-weight:800;color:#0C1B33;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1.5px solid #F1F5F9;">Recent Assignments</h3>
+            <h3 style="font-size:1.1rem;font-weight:800;color:#0C1B33;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1.5px solid #F1F5F9;">Recent Assignments / በቅርብ ጊዜ የተለቀቁ አሳይመንቶች</h3>
             {% for assignment in assignments %}
             <div style="padding:0.9rem 0;border-bottom:1px solid #F8FAFC;display:flex;justify-content:space-between;align-items:center;gap:0.5rem;">
                 <div style="font-weight:700;font-size:0.9rem;color:#0C1B33;">{{ assignment[2] }}</div>
                 <span style="font-size:0.72rem;font-weight:700;padding:0.2rem 0.6rem;background:#FEF2F2;color:#991B1B;border-radius:20px;white-space:nowrap;">Due: {{ assignment[6] }}</span>
             </div>
             {% else %}
-            <p style="color:#94A3B8;font-size:0.875rem;">No assignments yet.</p>
+            <p style="color:#94A3B8;font-size:0.875rem;">No assignments yet. / እስካሁን ምንም አይነት አሳይመንት የለም።</p>
             {% endfor %}
-            <a href="{{ url_for('student_assignments') }}" style="display:inline-block;margin-top:1.5rem;padding:0.7rem 1.5rem;border:2px solid #0C1B33;color:#0C1B33;border-radius:8px;font-size:0.85rem;font-weight:700;text-decoration:none;transition:all 0.2s;" onmouseover="this.style.background='#0C1B33';this.style.color='white'" onmouseout="this.style.background='transparent';this.style.color='#0C1B33'">View All Assignments</a>
+            <a href="{{ url_for('student_assignments') }}" style="display:inline-block;margin-top:1.5rem;padding:0.7rem 1.5rem;border:2px solid #0C1B33;color:#0C1B33;border-radius:8px;font-size:0.85rem;font-weight:700;text-decoration:none;transition:all 0.2s;" onmouseover="this.style.background='#0C1B33';this.style.color='white'" onmouseout="this.style.background='transparent';this.style.color='#0C1B33'">View All Assignments / ሁሉንም  ይመልከቱ አሳይመንቶች</a>
         </div>
     </div>
 </div>

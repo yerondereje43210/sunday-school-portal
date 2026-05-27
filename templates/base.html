@@ -6,7 +6,7 @@
 
     <title>
         {% block title %}
-        የባቴ ቅዱስ አማኑኤል ካቴድራል | Sunday School
+        የባቴ ቅዱስ አማኑኤል ካቴድራል ሆኅተ ብርሃን ሰ/ት/ቤት | Sunday School
         {% endblock %}
     </title>
 
@@ -297,8 +297,8 @@
              alt="Church Logo">
 
         <div class="navbar-brand-text">
-            <span>የባቴ ቅዱስ አማኑኤል ካቴድራል</span>
-            <span>Sunday School Portal</span>
+            <span>የባቴ ቅዱስ አማኑኤል ካቴድራል ሆኅተ ብርሃን ሰ/ት/ቤት</span>
+            <span>Sunday School LMS</span>
         </div>
 
     </a>
@@ -307,22 +307,22 @@
 
         {% if current_user.is_admin %}
 
-            <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
-            <a href="{{ url_for('admin_attendance') }}">Attendance</a>
-            <a href="{{ url_for('admin_lessons') }}">Lessons</a>
-            <a href="{{ url_for('admin_assignments') }}">Assignments</a>
+            <a href="{{ url_for('admin_dashboard') }}">Dashboard / ዳሽቦርድ</a>
+            <a href="{{ url_for('admin_attendance') }}">Attendance / አቴንዳንስ</a>
+            <a href="{{ url_for('admin_lessons') }}">Lessons / ትምህርቶች</a>
+            <a href="{{ url_for('admin_assignments') }}">Assignments / አሳይመንቶች</a>
 
         {% else %}
 
-            <a href="{{ url_for('student_dashboard') }}">Home</a>
-            <a href="{{ url_for('student_lessons') }}">Lessons</a>
-            <a href="{{ url_for('student_assignments') }}">Assignments</a>
-            <a href="{{ url_for('student_progress') }}">Progress</a>
+            <a href="{{ url_for('student_dashboard') }}">Home / ሆም</a>
+            <a href="{{ url_for('student_lessons') }}">Lessons / ትምህርቶች</a>
+            <a href="{{ url_for('student_assignments') }}">Assignments / አሳይመንቶች</a>
+            <a href="{{ url_for('student_progress') }}">Progress / ለውጦች</a>
 
         {% endif %}
 
         <a href="{{ url_for('logout') }}" class="logout-btn">
-            Logout
+            Logout / ውጣ
         </a>
 
     </div>
@@ -375,7 +375,7 @@
         <div class="footer-center">
 
             <p>
-                &copy; 2025 Sunday School Portal.
+                &copy; 2026 Sunday School LMS.
                 All rights reserved.
             </p>
 
