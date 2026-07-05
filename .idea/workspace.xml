@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d9d0f7ac-d89f-4837-9340-dbc9ffb24ef2" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="d9d0f7ac-d89f-4837-9340-dbc9ffb24ef2" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -23,6 +21,69 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="McpProjectServerCommands">
+    <commands />
+    <urls />
+  </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.305515361569754" />
+      <entry key="MS500" value="3.126375369258517" />
+      <entry key="S2" value="5.036777599401936" />
+      <entry key="S5" value="7.685577060904506" />
+      <entry key="S10" value="11.508596191148348" />
+      <entry key="S30" value="18.375515334791846" />
+      <entry key="S60" value="21.30123388473857" />
+      <entry key="M2" value="23.041480624427034" />
+      <entry key="M5" value="24.188607174410432" />
+      <entry key="M10" value="24.58948124776378" />
+      <entry key="M15" value="24.72523715611317" />
+      <entry key="M30" value="24.862073696582097" />
+      <entry key="H1" value="24.930900054176732" />
+      <entry key="H2" value="24.96541575657177" />
+      <entry key="H4" value="24.982699301641315" />
+      <entry key="D1" value="24.99711535830693" />
+      <entry key="W1" value="24.99958787912855" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="0.0" />
+      <entry key="S2" value="0.0" />
+      <entry key="S5" value="0.0" />
+      <entry key="S10" value="0.0" />
+      <entry key="S30" value="0.0" />
+      <entry key="S60" value="0.0" />
+      <entry key="M2" value="0.0" />
+      <entry key="M5" value="0.0" />
+      <entry key="M10" value="0.0" />
+      <entry key="M15" value="0.0" />
+      <entry key="M30" value="0.0" />
+      <entry key="H1" value="0.0" />
+      <entry key="H2" value="0.0" />
+      <entry key="H4" value="0.0" />
+      <entry key="D1" value="0.0" />
+      <entry key="W1" value="0.0" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="1.233112815117199" />
+      <entry key="MS500" value="3.0883732328690154" />
+      <entry key="S2" value="5.001306530347712" />
+      <entry key="S5" value="7.645955509714965" />
+      <entry key="S10" value="11.474607730830341" />
+      <entry key="S30" value="18.357108970904644" />
+      <entry key="S60" value="21.29063337849446" />
+      <entry key="M2" value="23.035773972307386" />
+      <entry key="M5" value="24.186218587854043" />
+      <entry key="M10" value="24.588268550331684" />
+      <entry key="M15" value="24.72442454388642" />
+      <entry key="M30" value="24.861665302278325" />
+      <entry key="H1" value="24.93069533223035" />
+      <entry key="H2" value="24.965313264055006" />
+      <entry key="H4" value="24.982648022453823" />
+      <entry key="D1" value="24.99710680719852" />
+      <entry key="W1" value="24.999586657429496" />
+    </decayedShown>
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 7,
   &quot;fromUser&quot;: false
@@ -32,16 +93,17 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "node.js.selected.package.tslint": "(autodetect)"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Yeron Dereje\PycharmProjects\PythonProject3\static\img" />
