@@ -417,10 +417,15 @@
             <p>&copy; 2026 Sunday School LMS. All rights reserved.</p>
         </div>
 
-        <div class="footer-right">
-            <img src="{{ url_for('static', filename='img/sedecia_logo.jpg') }}" alt="https://www.sedecia.com">
-            <span>Powered by SEDECIA Technologies</span>
-        </div>
+        <a href="https://www.sedecia.com" target="_blank" style="text-decoration: none; color: inherit;">
+    <div class="footer-right">
+        <img src="{{ url_for('static', filename='img/sedecia_logo.jpg') }}" alt="SEDECIA Technologies">
+        <span>Powered by SEDECIA Technologies</span>
+    </div
+        .footer-right {
+    cursor: pointer;
+}
+</a>
     </div>
 </footer>
 
